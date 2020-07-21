@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<records>
+  <record external_id="burner">
+    <field name="code">BURNER</field>
+    <field name="name">Bruleur</field>
+    <field name="serialyzer_class">home_thermostat.home_thermostat.schemas.relay:RelayState</field>
+  </record>
+  <record external_id="engine">
+    <field name="code">ENGINE</field>
+    <field name="name">Circulateur</field>
+    <field name="serialyzer_class">home_thermostat.home_thermostat.schemas.relay:RelayState</field>
+  </record>
+</records>

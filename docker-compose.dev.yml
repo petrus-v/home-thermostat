@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  frontend:
+    image: ${IMAGE:-local}/frontend:${GIT_TAG_NAME:-dev}
+    build:
+      context: ./frontend
+      target: dev
+    volumes:
+      - node_modules:/usr/fronend/node_modules
+      - ./frontend/src:/usr/frontend/src
+      - ./frontend/tests:/usr/frontend/tests
+    ports:
+      - 3000:3000
+    environment:
+      PORT: 3000
+      NODE_ENV: development
+
+  backend:
+    image: ${IMAGE:-local}/backend:${GIT_TAG_NAME:-dev}
+    build:
+      context: ./backend
+      target: dev
+    command: ["run-dev"]
+    environment:
+      ANYBLOK_CONFIG_FILE: app.dev.cfg
+    volumes:
+      - ./backend:/usr/backend/
+    ports:
+      - 5000:5000
+
+volumes:
+  node_modules:
+    driver: local

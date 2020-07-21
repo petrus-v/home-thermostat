@@ -1,0 +1,26 @@
+{
+    email ${ACME_EMAIL:-you@yours.com}
+}
+
+${HTTP_HOST:-http://thermostat.local} {
+    reverse_proxy /api/* http://backend:5000
+
+    root * /srv/frontend/
+    @try_files {
+        method GET
+        not file {
+            try_files {path}
+        }
+        not path /api/*
+    }
+    rewrite @try_files index.html
+    file_server
+
+    log {
+        output stdout
+        format console
+        level INFO
+    }
+
+    encode gzip
+}

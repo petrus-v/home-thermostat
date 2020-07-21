@@ -1,0 +1,66 @@
+{
+  "name": "thermostat-home",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit --coverage",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "@vuex-orm/core": "*",
+    "buefy": "*",
+    "ci": "*",
+    "core-js": "*",
+    "lodash": "*",
+    "vue": "*",
+    "vue-router": "*",
+    "vuex": "*"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "*",
+    "@vue/cli-plugin-eslint": "*",
+    "@vue/cli-plugin-router": "*",
+    "@vue/cli-plugin-unit-jest": "*",
+    "@vue/cli-plugin-vuex": "*",
+    "@vue/cli-service": "*",
+    "@vue/test-utils": "*",
+    "babel-eslint": "*",
+    "eslint": "*",
+    "eslint-plugin-vue": "*",
+    "flush-promises": "*",
+    "unfetch": "*",
+    "vue-template-compiler": "*"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {},
+    "overrides": [
+      {
+        "files": [
+          "**/__tests__/*.{j,t}s?(x)",
+          "**/tests/unit/**/*.spec.{j,t}s?(x)"
+        ],
+        "env": {
+          "jest": true
+        }
+      }
+    ]
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

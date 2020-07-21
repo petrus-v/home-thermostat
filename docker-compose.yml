@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+  frontend:
+    image: docker-registry.verkest.fr/pverkest/iot/frontend:${GIT_TAG_NAME:-latest}
+    init: true
+    networks:
+      - internal
+
+  backend:
+    image: docker-registry.verkest.fr/pverkest/iot/backend:${GIT_TAG_NAME:-latest}
+    init: true
+    networks:
+      - internal
+
+  db:
+    image: postgres
+    volumes:
+      - iot_data:/var/lib/postgresql/data
+    environment:
+      # in fact we won't use that one but the one config in Anyblok app.cfg
+      POSTGRES_DB: "${POSTGRES_DB:-iot}"
+      POSTGRES_USER: "${POSTGRES_USER:-iot}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:-iotpwd}"
+    networks:
+      - internal
+
+networks:
+  internal:
+
+volumes:
+  iot_data:
+    driver: local

@@ -1,0 +1,144 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Home mount Home view 1`] = `
+<div
+  data-se="home-page"
+>
+  <section>
+    <div
+      class="field"
+    >
+      <label
+        class="switch is-large is-rounded"
+      >
+        <input
+          true-value="true"
+          type="checkbox"
+          value="false"
+        />
+        <span
+          class="check is-dark-passive is-warning"
+        />
+        <span
+          class="control-label"
+        >
+          
+            Etat désiré du bruleur
+            
+          <transition-stub
+            name="fade"
+          >
+            <!---->
+          </transition-stub>
+        </span>
+      </label>
+       
+      <label
+        class="switch is-large is-disabled is-rounded"
+        disabled="disabled"
+      >
+        <input
+          disabled="disabled"
+          true-value="true"
+          type="checkbox"
+          value="false"
+        />
+        <span
+          class="check is-dark-passive is-warning"
+        />
+        <span
+          class="control-label"
+        >
+          
+            Etat du bruleur
+            
+          <transition-stub
+            name="fade"
+          >
+            <!---->
+          </transition-stub>
+        </span>
+      </label>
+    </div>
+     
+    <div
+      class="field"
+    >
+      <label
+        class="switch is-large is-rounded"
+      >
+        <input
+          true-value="true"
+          type="checkbox"
+          value="false"
+        />
+        <span
+          class="check is-dark-passive is-success"
+        />
+        <span
+          class="control-label"
+        >
+          
+            Etat désiré du circulateur
+            
+          <transition-stub
+            name="fade"
+          >
+            <!---->
+          </transition-stub>
+        </span>
+      </label>
+       
+      <label
+        class="switch is-large is-disabled is-rounded"
+        disabled="disabled"
+      >
+        <input
+          disabled="disabled"
+          true-value="true"
+          type="checkbox"
+          value="false"
+        />
+        <span
+          class="check is-dark-passive is-warning"
+        />
+        <span
+          class="control-label"
+        >
+          
+            Etat du circulateur
+            
+          <transition-stub
+            name="fade"
+          >
+            <!---->
+          </transition-stub>
+        </span>
+      </label>
+    </div>
+     
+    <div
+      class="buttons"
+    >
+      <button
+        class="button"
+        type="button"
+      >
+        <span
+          class="icon is-small"
+        >
+          <i
+            class="mdi mdi-refresh"
+          />
+        </span>
+        <span>
+          
+            Rafraîchir
+        
+        </span>
+        <!---->
+      </button>
+    </div>
+  </section>
+</div>
+`;

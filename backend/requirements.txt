@@ -1,0 +1,11 @@
+-e git+https://github.com/petrus-v/AnyBlok@first_cache_id_compare#egg=anyblok
+-e git+https://github.com/AnyBlok/AnyBlok_FastAPI.git@master#egg=anyblok_fastapi
+
+sqlalchemy
+psycopg2-binary
+aiofiles
+async-property
+httpx
+python-multipart
+anyblok_io
+anyblok_postgres
