@@ -137,7 +137,7 @@ define wait_db
 		-v ${PWD}/wait-for-it.sh:/tmp/wait-for-it.sh \
 		--network iot_internal \
 		python:3 \
-		/tmp/wait-for-it.sh db:5432 -s -t 30 -- echo Postgresql is ready \
+		/tmp/wait-for-it.sh db:5432 -s -t 60 -- echo Postgresql is ready \
 	|| (docker-compose -f docker-compose.yml logs --tail 100 db ; echo "Postresql wasn't ready in the given time"; exit 1)
 endef
 
