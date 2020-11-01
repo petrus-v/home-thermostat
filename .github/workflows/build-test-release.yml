@@ -1,0 +1,77 @@
+name: build-test-release
+
+on:
+  push:
+    branches: [main]
+    tags:
+      - v*
+  pull_request:
+    branches: [main]
+
+jobs:
+  # lint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #     - name: Set up Python 3.8
+  #       uses: actions/setup-python@v2
+  #       with:
+  #         python-version: 3.8
+  #     - name: Install dependencies and setup test db
+  #       run: |
+  #         pip install --upgrade pip wheel
+  #         pip install pre-commit
+  #     - name: Lint with flake8 / black...
+  #       run: make lint
+
+  test-unit-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Docker Login
+        uses: Azure/docker-login@v1
+        with:
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+          login-server: docker-registry.verkest.fr
+      - name: Backend unit test (pytest)
+        run: |
+          make setup-dev
+          make test-unit-backend
+      - uses: actions/upload-artifact@v2
+        if: failure()
+        with:
+          name: pdf-quotes-assertion
+          path: test_quotations/
+
+  test-unit-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: frontend unit test
+        run: make test-unit-frontend
+
+  test-integration-release:
+    needs:
+      # - lint
+      - test-unit-backend
+      - test-unit-frontend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: olegtarasov/get-tag@v2
+        id: tagName
+      - name: Docker Login
+        uses: Azure/docker-login@v1
+        with:
+          username: ${{ secrets.REGISTRY_USERNAME }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+          login-server: docker-registry.verkest.fr
+      # - name: release docker images, launch test
+      #   run: |
+      #     make test-integration
+      - name: Tag and Deploy
+        if: ${{ env.GIT_TAG_NAME }}
+        run: |
+          docker push docker-registry.verkest.fr/pverkest/iot/backend:${GIT_TAG_NAME}
+          docker push docker-registry.verkest.fr/pverkest/iot/frontend:${GIT_TAG_NAME}
