@@ -135,7 +135,7 @@ lint: ## check style with flake8
 define wait_db
 	docker run --rm \
 		-v ${PWD}/wait-for-it.sh:/tmp/wait-for-it.sh \
-		--network iot_internal \
+		--network home-thermostat_internal \
 		python:3 \
 		/tmp/wait-for-it.sh db:5432 -s -t 60 -- echo Postgresql is ready \
 	|| (docker-compose -f docker-compose.yml logs --tail 100 db ; echo "Postresql wasn't ready in the given time"; exit 1)
@@ -144,7 +144,7 @@ endef
 define wait_frontend
 	docker run --rm \
 		-v ${PWD}/wait-for-it.sh:/tmp/wait-for-it.sh \
-		--network iot_internal \
+		--network home-thermostat_internal \
 		python:3 \
 		/tmp/wait-for-it.sh enrj.local:80 -s -t 30 -- echo "frontend is ready" \
 	|| (docker-compose -f docker-compose.yml -f docker-compose.integration.yml logs --tail 100; echo "frontend wasn't ready in the given time"; exit 1)
@@ -153,7 +153,7 @@ endef
 define wait_backend
 	docker run --rm \
 		-v ${PWD}/wait-for-it.sh:/tmp/wait-for-it.sh \
-		--network iot_internal \
+		--network home-thermostat_internal \
 		python:3 \
 		/tmp/wait-for-it.sh backend:5000 -s -t 30 -- echo "backend is ready" \
 	|| (docker-compose -f docker-compose.yml -f docker-compose.integration.yml logs --tail 100 backend ; echo "backend wasn't ready in the given time"; exit 1)
@@ -162,7 +162,7 @@ endef
 define wait_selenium
 	docker run --rm \
 		-v ${PWD}/wait-for-it.sh:/tmp/wait-for-it.sh \
-		--network iot_internal \
+		--network home-thermostat_internal \
 		python:3 \
 		/tmp/wait-for-it.sh selenium-hub:4444 -s -t 60 -- echo "selenium is ready" \
 		|| (docker-compose -f docker-compose.yml -f docker-compose.integration.yml logs --tail 100 selenium-hub ; echo "selenium wasn't ready in the given time"; exit 1)
