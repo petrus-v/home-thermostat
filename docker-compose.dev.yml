@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   frontend:
-    image: ${IMAGE:-local}/frontend:${GIT_TAG_NAME:-dev}
+    image: ${IMAGE:-local}/pverkest/iot/frontend:${GIT_TAG_NAME:-dev}
     build:
       context: ./frontend
       target: dev
@@ -17,7 +17,7 @@ services:
       NODE_ENV: development
 
   backend:
-    image: ${IMAGE:-local}/backend:${GIT_TAG_NAME:-dev}
+    image: ${IMAGE:-local}/pverkest/iot/backend:${GIT_TAG_NAME:-dev}
     build:
       context: ./backend
       target: dev

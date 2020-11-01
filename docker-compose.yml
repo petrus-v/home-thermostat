@@ -3,13 +3,23 @@ version: "3.8"
 services:
   frontend:
     image: docker-registry.verkest.fr/pverkest/iot/frontend:${GIT_TAG_NAME:-latest}
+    build:
+      context: ./frontend
     init: true
+    ports:
+      - 80:80
     networks:
-      - internal
+      internal:
+        aliases:
+          - thermostat.local
 
   backend:
     image: docker-registry.verkest.fr/pverkest/iot/backend:${GIT_TAG_NAME:-latest}
+    build:
+      context: ./backend
     init: true
+    volumes:
+      - ./backend/app.cfg:/etc/app.cfg
     networks:
       - internal
 

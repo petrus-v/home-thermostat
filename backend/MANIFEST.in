@@ -1,0 +1,2 @@
+include home_thermostat/home_thermostat/*/*.xml
+include home_thermostat/home_thermostat/*/*.csv

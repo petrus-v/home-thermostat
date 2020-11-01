@@ -38,7 +38,10 @@ setup-dev:  ## Create or update database that will be ready to run unit tests (w
 	 $(call setup_db,"dev")
 
 setup-integration:  ## Create or update database that will be ready to run integrations tests (with demo data)
-	 $(call setup_db,"integration")
+	docker-compose up -d db
+	$(call wait_db)
+	docker-compose run --rm backend bash -c "anyblok_createdb -c /etc/app.cfg --with-demo || anyblok_updatedb -c /etc/app.cfg"
+
 
 psql-dev:
 	docker-compose -f docker-compose.yml -f docker-compose.dev.yml exec db psql --user iot iot
@@ -53,7 +56,7 @@ run:  ## running as production (using docker-compose.override.yaml if present)
 	docker-compose up -d
 
 build:
-	docker-compose -f docker-compose.yml -f docker-compose.release.yml build --parallel
+	docker-compose -f docker-compose.yml build --parallel
 
 test: test-unit-backend test-unit-frontend  ## Launching unit tests
 
@@ -74,41 +77,36 @@ npm-frontend:  ## launch npm commands, ie make npm-frontend args="update --save-
 test-integration: build test-integration-build setup-integration test-integration-boot test-integration-run ## Launch integration tests.
 
 test-integration-build:
-	docker-compose \
-		-f docker-compose.yml \
-		-f docker-compose.integration.yml \
-		build integration-test
+	# do nothing right now
 
 test-integration-boot: # Only boot integration tests container
-	docker-compose \
-		-f docker-compose.yml \
-		-f docker-compose.integration.yml \
-		up -d \
-			selenium-hub \
-			chrome \
-			firefox \
-			backend \
-			frontend
+	docker-compose up -d
+	# docker-compose \
+	# 	-f docker-compose.yml \
+	# 	-f docker-compose.integration.yml \
+	# 	up -d \
+	# 		selenium-hub \
+	# 		chrome \
+	# 		firefox \
+	# 		backend \
+	# 		frontend
 
 test-integration-run: # Only run integration tests (without building images nor setup env)
 	$(call wait_frontend)
 	$(call wait_backend)
-	$(call wait_selenium)
-	docker-compose \
-		-f docker-compose.yml \
-		-f docker-compose.integration.yml \
-		run --rm integration-test
+	# docker-compose \
+	# 	-f docker-compose.yml \
+	# 	-f docker-compose.integration.yml \
+	# 	run --rm integration-test
 
 logs: ## display app logs
 	docker-compose \
 		-f docker-compose.yml \
-		-f docker-compose.integration.yml \
 		logs --tail 100 -f
 
 ps: ## docker-compose ps using integration.yml
 	docker-compose \
 		-f docker-compose.yml \
-		-f docker-compose.integration.yml \
 		ps
 
 clean: ## Clean cache files, docker containers and docker volumes
@@ -146,8 +144,8 @@ define wait_frontend
 		-v ${PWD}/wait-for-it.sh:/tmp/wait-for-it.sh \
 		--network home-thermostat_internal \
 		python:3 \
-		/tmp/wait-for-it.sh enrj.local:80 -s -t 30 -- echo "frontend is ready" \
-	|| (docker-compose -f docker-compose.yml -f docker-compose.integration.yml logs --tail 100; echo "frontend wasn't ready in the given time"; exit 1)
+		/tmp/wait-for-it.sh thermostat.local:80 -s -t 30 -- echo "frontend is ready" \
+	|| (docker-compose -f docker-compose.yml logs --tail 100; echo "frontend wasn't ready in the given time"; exit 1)
 endef
 
 define wait_backend
@@ -156,7 +154,7 @@ define wait_backend
 		--network home-thermostat_internal \
 		python:3 \
 		/tmp/wait-for-it.sh backend:5000 -s -t 30 -- echo "backend is ready" \
-	|| (docker-compose -f docker-compose.yml -f docker-compose.integration.yml logs --tail 100 backend ; echo "backend wasn't ready in the given time"; exit 1)
+	|| (docker-compose -f docker-compose.yml logs --tail 100 backend ; echo "backend wasn't ready in the given time"; exit 1)
 endef
 
 define wait_selenium

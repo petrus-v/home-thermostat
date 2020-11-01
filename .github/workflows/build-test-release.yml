@@ -67,9 +67,9 @@ jobs:
           username: ${{ secrets.REGISTRY_USERNAME }}
           password: ${{ secrets.REGISTRY_PASSWORD }}
           login-server: docker-registry.verkest.fr
-      # - name: release docker images, launch test
-      #   run: |
-      #     make test-integration
+      - name: release docker images, launch test
+        run: |
+          make test-integration
       - name: Tag and Deploy
         if: ${{ env.GIT_TAG_NAME }}
         run: |
