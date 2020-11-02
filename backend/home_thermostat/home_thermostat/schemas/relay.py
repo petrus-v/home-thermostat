@@ -3,7 +3,7 @@ from typing import Optional
 
 
 class RelayState(BaseModel):
-    is_open: bool = False
+    is_open: bool = True
     """Tell whatever the network is open (turned off) or closed (turned off)
     """
 

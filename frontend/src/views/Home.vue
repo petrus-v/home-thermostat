@@ -95,7 +95,7 @@ export default {
         "BURNER/desired",
         "isDesiredBurnerLoading",
         "burnerDesiredState",
-        JSON.stringify({ is_open: new_value })
+        JSON.stringify({ is_open: !new_value })
       );
       // TODO: something weird happens in backend
       // if(new_value &&  !this.engineDesiredState){
@@ -126,7 +126,7 @@ export default {
         "ENGINE/desired",
         "isDesiredEngineLoading",
         "engineDesiredState",
-        JSON.stringify({ is_open: new_value })
+        JSON.stringify({ is_open: !new_value })
       );
     },
     getEngineDesiredState() {
@@ -157,7 +157,7 @@ export default {
           if (response.ok) return response.json();
         })
         .then(function(state) {
-          self[stateName] = state.is_open;
+          self[stateName] = !state.is_open;
           self[loaderName] = false;
         })
         .catch(err => {

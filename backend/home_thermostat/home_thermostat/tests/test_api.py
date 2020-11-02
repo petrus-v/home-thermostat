@@ -55,7 +55,7 @@ def test_api_device_code_state_get_latest_state_not_defined(
     response = webserver.get(f"/api/device/{engine.code}/state")
     assert response.status_code == 200
     assert response.json() == {
-        "is_open": False
+        "is_open": True
     }
 
 
@@ -120,7 +120,7 @@ def test_api_device_code_desired_state_get_latest_state_not_defined(
     response = webserver.get(f"/api/device/{engine.code}/desired/state")
     assert response.status_code == 200
     assert response.json() == {
-        "is_open": False
+        "is_open": True
     }
 
 

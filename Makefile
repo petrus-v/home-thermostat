@@ -58,7 +58,7 @@ run:  ## running as production (using docker-compose.override.yaml if present)
 build:
 	docker-compose -f docker-compose.yml build --parallel
 
-test: test-unit-backend test-unit-frontend  ## Launching unit tests
+test: init test-unit-backend test-unit-frontend  ## Launching unit tests
 
 test-unit-backend: ## Launch backend unit tests only, use `PYTEST_PARAMS="--lf" make test-unit-backend` to launch last failed tests only)
 	$(call wait_db)
