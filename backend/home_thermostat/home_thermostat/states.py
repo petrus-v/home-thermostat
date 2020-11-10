@@ -1,21 +1,18 @@
 from logging import getLogger
-
+from decimal import Decimal as D
 from anyblok import Declarations
-from anyblok.column import (
-    UUID,
-    String,
-    Selection
-)
+from anyblok.column import UUID, Boolean, Decimal, Integer, String, Selection
 from anyblok.relationship import Many2One
 from anyblok.field import Function
 from anyblok_postgres.column import Jsonb
+from uuid import uuid4
 
 
 logger = getLogger(__name__)
 Model = Declarations.Model
 Mixin = Declarations.Mixin
 
-from typing import Any
+from typing import Any, Union, Type
 
 import importlib
 
@@ -24,50 +21,114 @@ def dynamic_import(class_path: str) -> Any:
     module, class_name = class_path.split(":")
     return getattr(importlib.import_module(module), class_name)
 
-@Declarations.register(Declarations.Model)
-class IOT:
-    """Namespace for IOT"""
+
+@Declarations.register(Model)
+class Iot:
+    """Namespace for Iot"""
 
 
-@Declarations.register(Declarations.Model.IOT)
+@Declarations.register(Model.Iot)
 class Device(Mixin.UuidColumn):
     name: str = String(label="Name", nullable=False)
     code: str = String(label="Code", unique=True, nullable=False)
-    serialyzer_class: str = String(
-        label="class used to serialyze state",
-        nullable=False,
-    )
-
-    @property
-    def serialyzer(self):
-        return dynamic_import(self.serialyzer_class)
 
 
-@Declarations.register(Declarations.Model.IOT)
-class DesiredState(Mixin.UuidColumn, Mixin.TrackModel):
-    
-    device = Many2One(
-        label="Devie",
-        model=Declarations.Model.IOT.Device,
-        one2many='desired_states',
-        nullable=False
-    )
-    state = Jsonb(
-        label="state",
-        nullable=False,
-    )
-
-
-@Declarations.register(Declarations.Model.IOT)
+@Declarations.register(Model.Iot)
 class State(Mixin.UuidColumn, Mixin.TrackModel):
 
+    STATE_TYPE = None
+
     device = Many2One(
         label="Devie",
-        model=Declarations.Model.IOT.Device,
-        one2many='states',
-        nullable=False
-    )
-    state = Jsonb(
-        label="state",
+        model=Declarations.Model.Iot.Device,
+        one2many="states",
         nullable=False,
     )
+    state_type = Selection(selections="get_device_types", nullable=False)
+
+    @classmethod
+    def define_mapper_args(cls):
+        mapper_args = super().define_mapper_args()
+        if cls.__registry_name__ == "Model.Iot.State":
+            mapper_args.update({"polymorphic_on": cls.state_type})
+
+        mapper_args.update({"polymorphic_identity": cls.STATE_TYPE})
+        return mapper_args
+
+    @classmethod
+    def get_device_types(cls):
+        return dict(
+            DESIRED_RELAY="RelayDesired",
+            RELAY="Relay",
+            TEMPERATURE="Thermometer",
+            FUEL_GAUGE="fuelgauge",
+        )
+
+    @classmethod
+    def query(cls, *args, **kwargs):
+        query = super().query(*args, **kwargs)
+        if cls.__registry_name__.startswith("Model.Iot.State."):
+            query = query.filter(cls.state_type == cls.STATE_TYPE)
+
+        return query
+
+
+@Declarations.register(Model.Iot.State)
+class Relay(Model.Iot.State):
+
+    STATE_TYPE = "RELAY"
+
+    uuid: uuid4 = UUID(
+        primary_key=True,
+        default=uuid4,
+        binary=False,
+        foreign_key=Model.Iot.State.use("uuid").options(ondelete="CASCADE"),
+    )
+    is_open: bool = Boolean(label="Is open ?", default=True)
+    """Current circuit state. is_open == True means circuit open, it's turned
+    off"""
+
+
+@Declarations.register(Model.Iot.State)
+class DesiredRelay(Model.Iot.State):
+
+    STATE_TYPE = "DESIRED_RELAY"
+
+    uuid: uuid4 = UUID(
+        primary_key=True,
+        default=uuid4,
+        binary=False,
+        foreign_key=Model.Iot.State.use("uuid").options(ondelete="CASCADE"),
+    )
+    is_open: bool = Boolean(label="Is open ?", default=True)
+    """Current circuit state. is_open == True means circuit open, it's turned
+    off"""
+
+
+@Declarations.register(Model.Iot.State)
+class Thermometer(Model.Iot.State):
+
+    STATE_TYPE = "TEMPERATURE"
+
+    uuid: uuid4 = UUID(
+        primary_key=True,
+        default=uuid4,
+        binary=False,
+        foreign_key=Model.Iot.State.use("uuid").options(ondelete="CASCADE"),
+    )
+
+    celsius: D = Decimal(label="Thermometer (°C)")
+
+
+@Declarations.register(Model.Iot.State)
+class FuelGauge(Model.Iot.State):
+
+    STATE_TYPE = "FUEL_GAUGE"
+
+    uuid: uuid4 = UUID(
+        primary_key=True,
+        default=uuid4,
+        binary=False,
+        foreign_key=Model.Iot.State.use("uuid").options(ondelete="CASCADE"),
+    )
+    level: int = Integer(label="Fuel level (mm)")

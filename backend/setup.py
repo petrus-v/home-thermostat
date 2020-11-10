@@ -38,7 +38,9 @@ setup(
     url="https://github.com/petrus-v/anyblok-background-tasks",
     packages=find_packages(),
     entry_points={
-        "bloks": ["home_thermostat=home_thermostat.home_thermostat:HomeThermostat"]
+        "bloks": [
+            "home_thermostat=home_thermostat.home_thermostat:HomeThermostat"
+        ]
     },
     include_package_data=True,
     install_requires=requirements,

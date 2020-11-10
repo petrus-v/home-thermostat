@@ -3,11 +3,41 @@
   <record external_id="burner">
     <field name="code">BURNER</field>
     <field name="name">Bruleur</field>
-    <field name="serialyzer_class">home_thermostat.home_thermostat.schemas.relay:RelayState</field>
   </record>
+
   <record external_id="engine">
     <field name="code">ENGINE</field>
     <field name="name">Circulateur</field>
-    <field name="serialyzer_class">home_thermostat.home_thermostat.schemas.relay:RelayState</field>
   </record>
+
+  <record external_id="temperature_sensor_28-01193a44fa4c">
+    <field name="code">28-01193a44fa4c</field>
+    <field name="name">Un used</field>
+  </record>
+
+  <record external_id="temperature_sensor_28-01193a4a4aa2">
+    <field name="code">28-01193a4a4aa2</field>
+    <field name="name">Départ</field>
+  </record>
+
+  <record external_id="temperature_sensor_28-01193a77449f">
+    <field name="code">28-01193a77449f</field>
+    <field name="name">Retour</field>
+  </record>
+
+  <record external_id="temperature_sensor_28-01193a490806">
+    <field name="code">28-01193a490806</field>
+    <field name="name">Un used</field>
+  </record>
+
+  <record external_id="temperature_sensor_28-01193a503a1a">
+    <field name="code">28-01193a503a1a</field>
+    <field name="name">Un-used</field>
+  </record>
+
+  <record external_id="fuel-gauge">
+    <field name="code">FUEL</field>
+    <field name="name">Fioul</field>
+  </record>
+
 </records>

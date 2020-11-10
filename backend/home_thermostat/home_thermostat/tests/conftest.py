@@ -3,6 +3,21 @@ from anyblok_fastapi.conftest import webserver  # noqa: F401
 
 
 @pytest.fixture
+def water_departures(rollback_registry):
+    return get_device(rollback_registry, "temperature_sensor_28-01193a4a4aa2")
+
+
+@pytest.fixture
+def water_returns(rollback_registry):
+    return get_device(rollback_registry, "temperature_sensor_28-01193a77449f")
+
+
+@pytest.fixture
+def fioul_gauge(rollback_registry):
+    return get_device(rollback_registry, "fuel-gauge")
+
+
+@pytest.fixture
 def burner(rollback_registry):
     return get_device(rollback_registry, "burner")
 
@@ -13,6 +28,4 @@ def engine(rollback_registry):
 
 
 def get_device(registry, external_id):
-    return registry.IO.Mapping.get(
-        "Model.IOT.Device", external_id
-    )
+    return registry.IO.Mapping.get("Model.Iot.Device", external_id)
