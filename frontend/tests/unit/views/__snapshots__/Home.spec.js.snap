@@ -23,8 +23,8 @@ exports[`Home mount Home view 1`] = `
           class="control-label"
         >
           
-            Etat désiré du bruleur
-            
+        Etat désiré du bruleur
+        
           <transition-stub
             name="fade"
           >
@@ -50,8 +50,8 @@ exports[`Home mount Home view 1`] = `
           class="control-label"
         >
           
-            Etat du bruleur
-            
+        Etat du bruleur
+        
           <transition-stub
             name="fade"
           >
@@ -79,8 +79,8 @@ exports[`Home mount Home view 1`] = `
           class="control-label"
         >
           
-            Etat désiré du circulateur
-            
+        Etat désiré du circulateur
+        
           <transition-stub
             name="fade"
           >
@@ -106,8 +106,8 @@ exports[`Home mount Home view 1`] = `
           class="control-label"
         >
           
-            Etat du circulateur
-            
+        Etat du circulateur
+        
           <transition-stub
             name="fade"
           >
@@ -132,9 +132,7 @@ exports[`Home mount Home view 1`] = `
           />
         </span>
         <span>
-          
-            Rafraîchir
-        
+          Rafraîchir
         </span>
         <!---->
       </button>

@@ -2,57 +2,53 @@
   <div data-se="home-page">
     <section>
       <div class="field">
-          <b-switch 
-              :disabled="isDesiredBurnerLoading"
-              v-on:input="onChangeDesiredBurnerState"
-              v-model="burnerDesiredState"
-              type='is-warning'
-              size="is-large"
-              passive-type='is-dark'>
-              Etat désiré du bruleur
-              <b-loading :is-full-page="false" v-model="isDesiredBurnerLoading" :can-cancel="false">
-              </b-loading>
-          </b-switch>
-          <b-switch 
-              :disabled="true"
-              v-model="burnerState"
-              type='is-warning'
-              size="is-large"
-              passive-type='is-dark'>
-              Etat du bruleur
-              <b-loading :is-full-page="false" v-model="isBurnerLoading" :can-cancel="false">
-              </b-loading>
-          </b-switch>
+        <b-switch
+          :disabled="isDesiredBurnerLoading"
+          v-on:input="onChangeDesiredBurnerState"
+          v-model="burnerDesiredState"
+          type="is-warning"
+          size="is-large"
+          passive-type="is-dark"
+        >
+          Etat désiré du bruleur
+          <b-loading :is-full-page="false" v-model="isDesiredBurnerLoading" :can-cancel="false"></b-loading>
+        </b-switch>
+        <b-switch
+          :disabled="true"
+          v-model="burnerState"
+          type="is-warning"
+          size="is-large"
+          passive-type="is-dark"
+        >
+          Etat du bruleur
+          <b-loading :is-full-page="false" v-model="isBurnerLoading" :can-cancel="false"></b-loading>
+        </b-switch>
       </div>
       <div class="field">
-          <b-switch 
-              :disabled="isDesiredEngineLoading"
-              v-on:input="onChangeDesiredEngineState"
-              v-model="engineDesiredState"
-              type='is-success'
-              size="is-large"
-              passive-type='is-dark'>
-              Etat désiré du circulateur
-              <b-loading :is-full-page="false" v-model="isDesiredEngineLoading" :can-cancel="false">
-              </b-loading>
-          </b-switch>
-          <b-switch 
-              :disabled="true"
-              v-model="engineState"
-              type='is-warning'
-              size="is-large"
-              passive-type='is-dark'>
-              Etat du circulateur
-              <b-loading :is-full-page="false" v-model="isEngineLoading" :can-cancel="false">
-              </b-loading>
-          </b-switch>
+        <b-switch
+          :disabled="isDesiredEngineLoading"
+          v-on:input="onChangeDesiredEngineState"
+          v-model="engineDesiredState"
+          type="is-success"
+          size="is-large"
+          passive-type="is-dark"
+        >
+          Etat désiré du circulateur
+          <b-loading :is-full-page="false" v-model="isDesiredEngineLoading" :can-cancel="false"></b-loading>
+        </b-switch>
+        <b-switch
+          :disabled="true"
+          v-model="engineState"
+          type="is-warning"
+          size="is-large"
+          passive-type="is-dark"
+        >
+          Etat du circulateur
+          <b-loading :is-full-page="false" v-model="isEngineLoading" :can-cancel="false"></b-loading>
+        </b-switch>
       </div>
       <div class="buttons">
-          <b-button
-            @click="getStates"
-            icon-left="refresh">
-              Rafraîchir
-          </b-button>
+        <b-button @click="getStates" icon-left="refresh">Rafraîchir</b-button>
       </div>
     </section>
   </div>
@@ -70,8 +66,8 @@ export default {
       isEngineLoading: true,
       isDesiredEngineLoading: true,
       engineState: null,
-      engineDesiredState: null,
-    }
+      engineDesiredState: null
+    };
   },
   methods: {
     getStates() {
@@ -83,6 +79,7 @@ export default {
     getBurnerState() {
       this.getOrSetState(
         "GET",
+        "relay",
         "BURNER",
         "isBurnerLoading",
         "burnerState",
@@ -92,6 +89,7 @@ export default {
     onChangeDesiredBurnerState(new_value) {
       this.getOrSetState(
         "POST",
+        "relay",
         "BURNER/desired",
         "isDesiredBurnerLoading",
         "burnerDesiredState",
@@ -105,6 +103,7 @@ export default {
     getBurnerDesiredState() {
       this.getOrSetState(
         "GET",
+        "relay",
         "BURNER/desired",
         "isDesiredBurnerLoading",
         "burnerDesiredState",
@@ -114,6 +113,7 @@ export default {
     getEngineState() {
       this.getOrSetState(
         "GET",
+        "relay",
         "ENGINE",
         "isEngineLoading",
         "engineState",
@@ -123,6 +123,7 @@ export default {
     onChangeDesiredEngineState(new_value) {
       this.getOrSetState(
         "POST",
+        "relay",
         "ENGINE/desired",
         "isDesiredEngineLoading",
         "engineDesiredState",
@@ -132,19 +133,20 @@ export default {
     getEngineDesiredState() {
       this.getOrSetState(
         "GET",
+        "relay",
         "ENGINE/desired",
         "isDesiredEngineLoading",
         "engineDesiredState",
         null
       );
     },
-    getOrSetState(method, device, loaderName, stateName, payload) {
+    getOrSetState(method, device_type, device, loaderName, stateName, payload) {
       this[loaderName] = true;
       let self = this;
-      fetch(`/api/device/${device}/state`, {
+      fetch(`/api/device/${device_type}/${device}/state`, {
         method: method,
         body: payload,
-        headers: { 
+        headers: {
           "Content-Type": "application/json"
         }
       })
@@ -169,6 +171,6 @@ export default {
   },
   mounted() {
     this.getStates();
-  },
+  }
 };
 </script>

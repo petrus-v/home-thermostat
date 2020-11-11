@@ -5,10 +5,10 @@ const localVue = global.localVue;
 const store = global.store;
 
 const API_RESULTS = {
-  "/api/device/ENGINE/desired/state": Promise.resolve({ is_open: true }),
-  "/api/device/BURNER/desired/state": Promise.resolve({ is_open: true }),
-  "/api/device/ENGINE/state": Promise.resolve({ is_open: true }),
-  "/api/device/BURNER/state": Promise.resolve({ is_open: false }),
+  "/api/device/relay/ENGINE/desired/state": Promise.resolve({ is_open: true }),
+  "/api/device/relay/BURNER/desired/state": Promise.resolve({ is_open: true }),
+  "/api/device/relay/ENGINE/state": Promise.resolve({ is_open: true }),
+  "/api/device/relay/BURNER/state": Promise.resolve({ is_open: false }),
 };
 
 global.fetch = jest.fn((api, content) => {
@@ -28,7 +28,7 @@ describe("Home", () => {
       store,
       localVue,
     });
-    await flushPromises()
+    await flushPromises();
     expect(wrapper.element).toMatchSnapshot();
   });
 });
