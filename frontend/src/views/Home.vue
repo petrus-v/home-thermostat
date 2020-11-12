@@ -8,9 +8,10 @@
           v-model="burnerDesiredState.is_open"
           :true-value="false"
           :false-value="true"
-          type="is-warning"
+          type="is-success"
           size="is-large"
           passive-type="is-dark"
+          name="switch-desired-burner-state"
         >
           Etat désiré du bruleur
           <b-loading :is-full-page="false" v-model="isDesiredBurnerLoading" :can-cancel="false"></b-loading>
@@ -38,6 +39,7 @@
           type="is-success"
           size="is-large"
           passive-type="is-dark"
+          name="switch-desired-engine-state"
         >
           Etat désiré du circulateur
           <b-loading :is-full-page="false" v-model="isDesiredEngineLoading" :can-cancel="false"></b-loading>
@@ -103,10 +105,9 @@ export default {
         "burnerDesiredState",
         JSON.stringify({ is_open: new_value })
       );
-      // TODO: something weird happens in backend
-      // if(new_value &&  !this.engineDesiredState){
-      //   this.onChangeDesiredEngineState(new_value);
-      // }
+      if (!new_value && this.engineDesiredState.is_open) {
+        this.onChangeDesiredEngineState(new_value);
+      }
     },
     getBurnerDesiredState() {
       this.getOrSetState(

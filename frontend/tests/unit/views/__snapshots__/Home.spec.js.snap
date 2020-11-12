@@ -13,11 +13,12 @@ exports[`Home mount Home view 1`] = `
       >
         <input
           false-value="true"
+          name="switch-desired-burner-state"
           type="checkbox"
           value="false"
         />
         <span
-          class="check is-dark-passive is-warning"
+          class="check is-dark-passive is-success"
         />
         <span
           class="control-label"
@@ -69,6 +70,7 @@ exports[`Home mount Home view 1`] = `
       >
         <input
           false-value="true"
+          name="switch-desired-engine-state"
           type="checkbox"
           value="false"
         />
