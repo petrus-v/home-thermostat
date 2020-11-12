@@ -5,7 +5,9 @@
         <b-switch
           :disabled="isDesiredBurnerLoading"
           v-on:input="onChangeDesiredBurnerState"
-          v-model="burnerDesiredState"
+          v-model="burnerDesiredState.is_open"
+          :true-value="false"
+          :false-value="true"
           type="is-warning"
           size="is-large"
           passive-type="is-dark"
@@ -15,7 +17,9 @@
         </b-switch>
         <b-switch
           :disabled="true"
-          v-model="burnerState"
+          v-model="burnerState.is_open"
+          :true-value="false"
+          :false-value="true"
           type="is-warning"
           size="is-large"
           passive-type="is-dark"
@@ -28,7 +32,9 @@
         <b-switch
           :disabled="isDesiredEngineLoading"
           v-on:input="onChangeDesiredEngineState"
-          v-model="engineDesiredState"
+          v-model="engineDesiredState.is_open"
+          :true-value="false"
+          :false-value="true"
           type="is-success"
           size="is-large"
           passive-type="is-dark"
@@ -38,7 +44,9 @@
         </b-switch>
         <b-switch
           :disabled="true"
-          v-model="engineState"
+          v-model="engineState.is_open"
+          :true-value="false"
+          :false-value="true"
           type="is-warning"
           size="is-large"
           passive-type="is-dark"
@@ -61,12 +69,12 @@ export default {
     return {
       isBurnerLoading: true,
       isDesiredBurnerLoading: true,
-      burnerState: null,
-      burnerDesiredState: null,
+      burnerState: { is_open: true },
+      burnerDesiredState: { is_open: true },
       isEngineLoading: true,
       isDesiredEngineLoading: true,
-      engineState: null,
-      engineDesiredState: null
+      engineState: { is_open: true },
+      engineDesiredState: { is_open: true }
     };
   },
   methods: {
@@ -93,7 +101,7 @@ export default {
         "BURNER/desired",
         "isDesiredBurnerLoading",
         "burnerDesiredState",
-        JSON.stringify({ is_open: !new_value })
+        JSON.stringify({ is_open: new_value })
       );
       // TODO: something weird happens in backend
       // if(new_value &&  !this.engineDesiredState){
@@ -127,7 +135,7 @@ export default {
         "ENGINE/desired",
         "isDesiredEngineLoading",
         "engineDesiredState",
-        JSON.stringify({ is_open: !new_value })
+        JSON.stringify({ is_open: new_value })
       );
     },
     getEngineDesiredState() {
@@ -141,6 +149,7 @@ export default {
       );
     },
     getOrSetState(method, device_type, device, loaderName, stateName, payload) {
+      const error_state = { is_open: true };
       this[loaderName] = true;
       let self = this;
       fetch(`/api/device/${device_type}/${device}/state`, {
@@ -153,19 +162,19 @@ export default {
         .then(function(response) {
           if (!response.ok) {
             self[loaderName] = true;
-            self[stateName] = null;
+            self[stateName] = error_state;
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           if (response.ok) return response.json();
         })
         .then(function(state) {
-          self[stateName] = !state.is_open;
+          self[stateName] = state;
           self[loaderName] = false;
         })
         .catch(err => {
           console.error("Error: ", err);
           self[loaderName] = true;
-          self[stateName] = null;
+          self[stateName] = error_state;
         });
     }
   },
