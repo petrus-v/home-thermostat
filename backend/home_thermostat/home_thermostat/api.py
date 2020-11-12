@@ -1,10 +1,12 @@
 from typing import List, TYPE_CHECKING, Union, Type
-from .schemas.devices import RelayState, ThermometerState, FuelGauge
+from .schemas.devices import RelayState, ThermometerState, FuelGaugeState
 from starlette.requests import Request
 from fastapi import Depends
 from anyblok_fastapi.fastapi import get_registry, registry_transaction
 from anyblok.registry import Registry
-
+from sqlalchemy.orm import contains_eager
+import time
+from home_thermostat.home_thermostat.schemas.devices import RelayState, ThermometerState, FuelGaugeState
 
 if TYPE_CHECKING:
     from anyblok import registry
@@ -13,36 +15,40 @@ if TYPE_CHECKING:
 def device_relay_state(
     code: str,
     ab_registry: "Registry" = Depends(get_registry),
-) -> "registry.Iot.State.Relay":
+) -> RelayState:
     """HTTP GET"""
     with registry_transaction(ab_registry) as registry:
-        return get_device_state(registry, code, registry.Iot.State.Relay)
-
-
-def device_fuel_gauge_state(
-    code: str,
-    ab_registry: "Registry" = Depends(get_registry),
-) -> "registry.Iot.State.FuelGauge":
-    """HTTP GET"""
-    with registry_transaction(ab_registry) as registry:
-        return get_device_state(registry, code, registry.Iot.State.FuelGauge)
-
-
-def device_thermometer_state(
-    code: str,
-    ab_registry: "Registry" = Depends(get_registry),
-) -> "registry.Iot.State.Thermometer":
-    """HTTP GET"""
-    with registry_transaction(ab_registry) as registry:
-        return get_device_state(registry, code, registry.Iot.State.Thermometer)
+        return RelayState.from_orm(get_device_state(registry, code, registry.Iot.State.Relay))
 
 
 def device_relay_desired_state(
     code: str,
     ab_registry: "Registry" = Depends(get_registry),
-) -> "registry.Iot.State.DesiredRelay":
+) -> RelayState:
     with registry_transaction(ab_registry) as registry:
-        return get_device_state(registry, code, registry.Iot.State.DesiredRelay)
+        return RelayState.from_orm(get_device_state(registry, code, registry.Iot.State.DesiredRelay))
+
+
+def device_fuel_gauge_state(
+    code: str,
+    ab_registry: "Registry" = Depends(get_registry),
+) -> FuelGaugeState:
+    """HTTP GET"""
+    with registry_transaction(ab_registry) as registry:
+        return FuelGaugeState.from_orm(
+            get_device_state(registry, code, registry.Iot.State.FuelGauge)
+        )
+
+
+def device_thermometer_state(
+    code: str,
+    ab_registry: "Registry" = Depends(get_registry),
+) -> ThermometerState:
+    """HTTP GET"""
+    with registry_transaction(ab_registry) as registry:
+        return ThermometerState.from_orm(
+            get_device_state(registry, code, registry.Iot.State.Thermometer)
+        )
 
 
 def get_device_state(
@@ -77,28 +83,33 @@ def save_device_relay_state(
     code: str,
     state: RelayState,
     ab_registry: "Registry" = Depends(get_registry),
-) -> "registry.Iot.State.Relay":
+) -> RelayState:
     with registry_transaction(ab_registry) as registry:
-        return set_device_state(registry, code, state, registry.Iot.State.Relay)
+        return RelayState.from_orm(
+            set_device_state(registry, code, state, registry.Iot.State.Relay)
+        )
 
 
 def save_device_fuel_gauge_state(
     code: str,
-    state: FuelGauge,
+    state: FuelGaugeState,
     ab_registry: "Registry" = Depends(get_registry),
-) -> "registry.Iot.State.FuelGauge":
+) -> FuelGaugeState:
     with registry_transaction(ab_registry) as registry:
-        return set_device_state(registry, code, state, registry.Iot.State.FuelGauge)
-
+        return FuelGaugeState.from_orm(
+            set_device_state(registry, code, state, registry.Iot.State.FuelGauge)
+        )
 
 def save_device_thermometer_state(
     code: str,
     state: ThermometerState,
     ab_registry: "Registry" = Depends(get_registry),
-) -> "registry.Iot.State.Thermometer":
+) -> ThermometerState:
     with registry_transaction(ab_registry) as registry:
-        return set_device_state(
-            registry, code, state, registry.Iot.State.Thermometer
+        return ThermometerState.from_orm(
+            set_device_state(
+                registry, code, state, registry.Iot.State.Thermometer
+            )
         )
 
 
@@ -106,17 +117,19 @@ def save_device_relay_desired_state(
     code: str,
     state: RelayState,
     ab_registry: "Registry" = Depends(get_registry),
-) -> "registry.Iot.State.DesiredRelay":
+) -> RelayState:
     with registry_transaction(ab_registry) as registry:
-        return set_device_state(
-            registry, code, state, registry.Iot.State.DesiredRelay
+        return RelayState.from_orm(
+            set_device_state(
+                registry, code, state, registry.Iot.State.DesiredRelay
+            )
         )
 
 
 def set_device_state(
     registry: "registry",
     code: str,
-    state: Union[RelayState, ThermometerState, FuelGauge],
+    state: Union[RelayState, ThermometerState, FuelGaugeState],
     State: Type["registry.Iot.State"],
 ) -> Union[
     "registry.Iot.State.DesiredRelay",

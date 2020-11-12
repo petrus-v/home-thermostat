@@ -36,7 +36,7 @@ class ThermometerState(BaseState):
     celsius: Decimal = None
 
 
-class FuelGauge(BaseState):
+class FuelGaugeState(BaseState):
 
     level: int = None
     """Millimeter collected fioul level"""

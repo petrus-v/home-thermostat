@@ -54,7 +54,7 @@ class HomeThermostat(Blok, BlokImporter):
             device_relay_desired_state,
             save_device_relay_desired_state,
         )
-        from .schemas.devices import RelayState, ThermometerState, FuelGauge
+        from .schemas.devices import RelayState, ThermometerState, FuelGaugeState
 
         self.registry.declare_routes(
             {
@@ -91,14 +91,14 @@ class HomeThermostat(Blok, BlokImporter):
                     device_fuel_gauge_state,
                     methods=["GET"],
                     response_class=JSONResponse,
-                    response_model=FuelGauge,
+                    response_model=FuelGaugeState,
                 ),
                 "POST/api/device/fuel_gauge/{code}/state": APIRoute(
                     "/api/device/fuel_gauge/{code}/state",
                     save_device_fuel_gauge_state,
                     methods=["POST"],
                     response_class=JSONResponse,
-                    response_model=FuelGauge,
+                    response_model=FuelGaugeState,
                 ),
                 "GET/api/device/thermometer/{code}/state": APIRoute(
                     "/api/device/thermometer/{code}/state",
