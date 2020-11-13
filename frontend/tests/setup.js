@@ -17,4 +17,8 @@ global.localVue.use(Vuex);
 global.localVue.use(Router);
 global.store = store;
 global.router = router;
+
+global.DEPARTURE = "28-01193a4a4aa2";
+global.ARRIVAL = "28-01193a77449f";
+
 initData();

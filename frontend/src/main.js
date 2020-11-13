@@ -7,8 +7,13 @@ import store from "@/store";
 import { initData } from "@/store/references";
 Vue.config.productionTip = false;
 Vue.use(Buefy, {
-  defaultFieldLabelPosition: "on-border",
+  // defaultFieldLabelPosition: "on-border",
 });
+
+// departure: "28-01193a4a4aa2",
+// arrival: "28-01193a77449f",
+global.DEPARTURE = "28-01193a4a4aa2";
+global.ARRIVAL = "28-01193a77449f";
 
 new Vue({
   router,
