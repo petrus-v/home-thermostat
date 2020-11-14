@@ -203,7 +203,7 @@ exports[`Home mount Home view 1`] = `
           >
             <!---->
             <div
-              class="b-slider is-success is-disabled"
+              class="b-slider is-info is-disabled"
             >
               <div
                 class="b-slider-track"
@@ -861,7 +861,7 @@ exports[`Home mount Home view 1`] = `
                   style="left: 21.625%;"
                 >
                   <span
-                    class="b-tooltip is-success is-top is-medium"
+                    class="b-tooltip is-info is-top is-medium"
                   >
                     <transition-stub
                       name="fade"
@@ -928,7 +928,7 @@ exports[`Home mount Home view 1`] = `
           >
             <!---->
             <div
-              class="b-slider is-success is-disabled"
+              class="b-slider is-info is-disabled"
             >
               <div
                 class="b-slider-track"
@@ -1586,7 +1586,7 @@ exports[`Home mount Home view 1`] = `
                   style="left: 34.75%;"
                 >
                   <span
-                    class="b-tooltip is-success is-top is-medium"
+                    class="b-tooltip is-info is-top is-medium"
                   >
                     <transition-stub
                       name="fade"

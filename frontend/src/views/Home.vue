@@ -71,48 +71,35 @@
       <div class="box">
         <h2 class="subtitle">Températures</h2>
 
-        <b-field label="Départ (°C)" :message="departureDate">
-          <b-slider
-            :min="-5"
-            :max="75"
-            ticks
-            disabled
-            indicator
-            v-model="departureState.celsius"
-            :type="departureSliderType"
-            :tooltip-type="departureSliderType"
-          >
-            <template v-for="val in Array.from({length: 17}, (_, i) => i * 5 - 5)">
-              <b-slider-tick :value="val" :key="'d' + val">{{ val }}</b-slider-tick>
-            </template>
-          </b-slider>
-          <b-loading :is-full-page="false" v-model="isDeapartureLoading" :can-cancel="false"></b-loading>
-        </b-field>
-        <b-field label="Retour (°C)" :message="arrivalDate">
-          <b-slider
-            :min="-5"
-            :max="75"
-            ticks
-            disabled
-            indicator
-            v-model="arrivalState.celsius"
-            :type="arrivalSliderType"
-            :tooltip-type="arrivalSliderType"
-          >
-            <template v-for="val in Array.from({length: 17}, (_, i) => i * 5 - 5)">
-              <b-slider-tick :value="val" :key="'a' + val">{{ val }}</b-slider-tick>
-            </template>
-          </b-slider>
-          <b-loading :is-full-page="false" v-model="isArrivalLoading" :can-cancel="false"></b-loading>
-        </b-field>
+        <thermometer
+          label="Départ (°C)"
+          :message="departureDate"
+          :min="-5"
+          :max="75"
+          :value="departureState.celsius"
+          :loading="isDeapartureLoading"
+        />
+        <thermometer
+          label="Retour (°C)"
+          :message="arrivalDate"
+          :min="-5"
+          :max="75"
+          :value="arrivalState.celsius"
+          :loading="isArrivalLoading"
+        />
       </div>
     </section>
   </div>
 </template>
 
 <script>
+import Thermometer from "@/components/Thermometer";
+
 export default {
   name: "Home",
+  components: {
+    Thermometer
+  },
   data() {
     return {
       departure: global.DEPARTURE,
@@ -132,14 +119,8 @@ export default {
     };
   },
   computed: {
-    departureSliderType() {
-      return this.sliderType(this.departureState.celsius, 0, 25, 50);
-    },
     departureDate() {
       return this.parseDate(this.departureState.create_date);
-    },
-    arrivalSliderType() {
-      return this.sliderType(this.arrivalState.celsius, 0, 25, 50);
     },
     arrivalDate() {
       return this.parseDate(this.arrivalState.create_date);
@@ -158,16 +139,6 @@ export default {
     }
   },
   methods: {
-    sliderType(celsius, b1, b2, b3) {
-      if (celsius > b2 && celsius < b3) {
-        return "is-warning";
-      } else if (celsius >= b3) {
-        return "is-danger";
-      } else if (celsius <= b1) {
-        return "is-info";
-      }
-      return "is-success";
-    },
     parseDate(dateStr) {
       if (dateStr === undefined || !dateStr) {
         return "";

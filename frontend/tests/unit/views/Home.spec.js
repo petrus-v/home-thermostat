@@ -46,18 +46,6 @@ describe("Home", () => {
     });
   });
 
-  it("Testing slider style", async () => {
-    const wrapper = shallowMount(Home, {
-      store,
-      localVue,
-    });
-    await flushPromises();
-    expect(wrapper.vm.sliderType(-1.1, 0, 5, 10)).toBe("is-info");
-    expect(wrapper.vm.sliderType(2, 0, 5, 10)).toBe("is-success");
-    expect(wrapper.vm.sliderType(7, 0, 5, 10)).toBe("is-warning");
-    expect(wrapper.vm.sliderType(11, 0, 5, 10)).toBe("is-danger");
-  });
-
   it("Testing date parser", async () => {
     const wrapper = shallowMount(Home, {
       store,
