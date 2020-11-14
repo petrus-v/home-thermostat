@@ -8,22 +8,62 @@ exports[`Home mount Home view 1`] = `
     <div
       class="buttons"
     >
-      <button
-        class="button"
-        type="button"
+      <div
+        class="field"
       >
-        <span
-          class="icon is-small"
-        >
-          <i
-            class="mdi mdi-refresh"
-          />
-        </span>
-        <span>
-          Rafraîchir
-        </span>
         <!---->
-      </button>
+        <div
+          class="field-body"
+        >
+          <div
+            class="field has-addons"
+          >
+            <!---->
+            <button
+              class="button"
+              type="button"
+            >
+              <span
+                class="icon is-small"
+              >
+                <i
+                  class="mdi mdi-refresh"
+                />
+              </span>
+              <span>
+                Rafraîchir
+              </span>
+              <!---->
+            </button>
+             
+            <div
+              class="control"
+            >
+              <span
+                class="select"
+              >
+                <select>
+                  <!---->
+                  <option
+                    value="manual"
+                  >
+                    Manuel
+                  </option>
+                   
+                  <option
+                    value="thermostat"
+                  >
+                    Thermostat
+                  </option>
+                </select>
+              </span>
+              <!---->
+            </div>
+            <!---->
+          </div>
+        </div>
+        <!---->
+      </div>
     </div>
      
     <div

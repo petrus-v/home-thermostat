@@ -33,6 +33,9 @@ describe("Home", () => {
         is_open: false,
         create_date: "2020-11-12T19:25:32.855879",
       }),
+      "/api/mode": Promise.resolve({
+        mode: "manual",
+      }),
     });
     const departure_uri = `/api/device/thermometer/${global.DEPARTURE}/state`;
     const arrival_uri = `/api/device/thermometer/${global.ARRIVAL}/state`;

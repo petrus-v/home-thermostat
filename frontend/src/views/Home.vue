@@ -2,7 +2,19 @@
   <div data-se="home-page">
     <section>
       <div class="buttons">
-        <b-button @click="getStates" icon-left="refresh">Rafraîchir</b-button>
+        <b-field>
+          <b-button @click="getStates" icon-left="refresh">Rafraîchir</b-button>
+          <b-select
+            v-model="mode.mode"
+            placeholder="Select mode"
+            v-on:input="onChangeMode"
+            :loading="isModeLoading"
+            :disabled="isModeLoading"
+          >
+            <option value="manual">Manuel</option>
+            <option value="thermostat">Thermostat</option>
+          </b-select>
+        </b-field>
       </div>
       <div class="box">
         <h2 class="subtitle">Relais</h2>
@@ -17,6 +29,7 @@
             size="is-large"
             passive-type="is-dark"
             name="switch-desired-burner-state"
+            v-if="mode.mode === 'manual'"
           >
             <p>Etat désiré du bruleur</p>
             <b-loading :is-full-page="false" v-model="isDesiredBurnerLoading" :can-cancel="false"></b-loading>
@@ -47,6 +60,7 @@
             size="is-large"
             passive-type="is-dark"
             name="switch-desired-engine-state"
+            v-if="mode.mode === 'manual'"
           >
             <p>Etat désiré du circulateur</p>
             <b-loading :is-full-page="false" v-model="isDesiredEngineLoading" :can-cancel="false"></b-loading>
@@ -102,6 +116,8 @@ export default {
   },
   data() {
     return {
+      mode: { mode: "thermostat" },
+      isModeLoading: true,
       departure: global.DEPARTURE,
       isDeapartureLoading: true,
       departureState: { celsius: null },
@@ -158,12 +174,33 @@ export default {
       }).format(date);
     },
     getStates() {
+      this.getMode();
       this.getBurnerState();
       this.getBurnerDesiredState();
       this.getEngineState();
       this.getEngineDesiredState();
       this.getDeapartureState();
       this.getArrivalState();
+    },
+    onChangeMode(newValue) {
+      this.setMode(newValue);
+    },
+    getMode() {
+      this.call_api("/api/mode", "GET", "isModeLoading", "mode", null, {
+        mode: null
+      });
+    },
+    setMode(modeValue) {
+      this.call_api(
+        "/api/mode",
+        "POST",
+        "isModeLoading",
+        "mode",
+        JSON.stringify({ mode: modeValue }),
+        {
+          mode: null
+        }
+      );
     },
     getDeapartureState() {
       this.getOrSetState(
@@ -254,9 +291,19 @@ export default {
         thermometer: { celsius: null }
       };
       const error_state = defaultStates[device_type];
+      this.call_api(
+        `/api/device/${device_type}/${device}/state`,
+        method,
+        loaderName,
+        stateName,
+        payload,
+        error_state
+      );
+    },
+    call_api(uri, method, loaderName, stateName, payload, error_state) {
       this[loaderName] = true;
       let self = this;
-      fetch(`/api/device/${device_type}/${device}/state`, {
+      fetch(uri, {
         method: method,
         body: payload,
         headers: {

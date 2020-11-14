@@ -7,6 +7,7 @@ import store from "@/store";
 import { initData } from "@/store/references";
 Vue.config.productionTip = false;
 Vue.use(Buefy, {
+  defaultLocale: "fr-FR",
   // defaultFieldLabelPosition: "on-border",
 });
 
