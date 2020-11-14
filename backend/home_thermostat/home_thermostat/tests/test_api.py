@@ -243,3 +243,41 @@ def test_save_device_desired_state_wrong_format(
     )
     assert response.status_code == 422, str(response)
     assert count_before + 0 == State.query().count()
+
+
+@pytest.mark.parametrize(
+    "payload,response",
+    (
+        ({"mode": "manual"}, {"mode": "manual"}),
+        ({"mode": "thermostat"}, {"mode": "thermostat"}),
+    ),
+)
+
+
+def test_save_thermostat_mode(
+    rollback_registry, webserver, payload, response
+):
+    r = webserver.post(
+        f"/api/mode", json=payload
+    )
+    assert r.status_code == 200, str(response)
+    assert r.json() == response
+
+
+@pytest.mark.parametrize(
+    "mode,response",
+    (
+        ("manual", {"mode": "manual"}),
+        ("thermostat", {"mode": "thermostat"}),
+    ),
+)
+def test_save_thermostat_mode(
+    rollback_registry, webserver, mode, response
+):
+    registry = rollback_registry
+    registry.System.Parameter.set("mode", mode)
+    r = webserver.get(
+        f"/api/mode",
+    )
+    assert r.status_code == 200, str(response)
+    assert r.json() == response

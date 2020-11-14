@@ -6,7 +6,10 @@ from anyblok_fastapi.fastapi import get_registry, registry_transaction
 from anyblok.registry import Registry
 from sqlalchemy.orm import contains_eager
 import time
-from home_thermostat.home_thermostat.schemas.devices import RelayState, ThermometerState, FuelGaugeState
+from home_thermostat.home_thermostat.common import ThermostatMode as Mode
+from home_thermostat.home_thermostat.schemas.devices import (
+    RelayState, ThermometerState, FuelGaugeState, ThermostatMode
+)
 
 if TYPE_CHECKING:
     from anyblok import registry
@@ -144,3 +147,22 @@ def set_device_state(
     state = State.insert(**data)
     registry.flush()
     return state
+
+def set_mode(
+    mode: ThermostatMode,
+    ab_registry: "Registry" = Depends(get_registry),
+) -> ThermostatMode:
+    with registry_transaction(ab_registry) as registry:
+        registry.System.Parameter.set("mode", mode)
+    return mode
+
+
+def get_mode(
+    ab_registry: "Registry" = Depends(get_registry),
+) -> ThermostatMode:
+    with registry_transaction(ab_registry) as registry:
+        return ThermostatMode(
+            mode=registry.System.Parameter.get(
+                "mode", default=Mode.manual.value
+            )
+        )

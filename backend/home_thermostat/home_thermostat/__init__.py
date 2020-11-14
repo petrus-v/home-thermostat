@@ -25,6 +25,7 @@ class HomeThermostat(Blok, BlokImporter):
     def import_declaration_module(cls) -> None:
         """Python module to import in the given order at start-up"""
         from . import states  # noqa
+        from . import common  # noqa
         from .schemas import devices  # noqa
 
     @classmethod
@@ -35,9 +36,12 @@ class HomeThermostat(Blok, BlokImporter):
         adding Blok at runtime
         """
         from . import states  # noqa
+        from . import common  # noqa
         from .schemas import devices  # noqa
 
         reload(states)
+        reload(common)
+        reload(devices)
 
     def update(self, latest: "AnyBlokVersion") -> None:
         """Update blok"""
@@ -53,11 +57,28 @@ class HomeThermostat(Blok, BlokImporter):
             save_device_thermometer_state,
             device_relay_desired_state,
             save_device_relay_desired_state,
+            set_mode,
+            get_mode,
         )
-        from .schemas.devices import RelayState, ThermometerState, FuelGaugeState
-
+        from .schemas.devices import (
+            RelayState, ThermometerState, FuelGaugeState, ThermostatMode
+        )
         self.registry.declare_routes(
             {
+                "GET/api/mode": APIRoute(
+                    "/api/mode",
+                    get_mode,
+                    methods=["GET"],
+                    response_class=JSONResponse,
+                    response_model=ThermostatMode,
+                ),
+                "POST/api/mode": APIRoute(
+                    "/api/mode",
+                    set_mode,
+                    methods=["POST"],
+                    response_class=JSONResponse,
+                    response_model=ThermostatMode,
+                ),
                 "GET/api/device/relay/{code}/state": APIRoute(
                     "/api/device/relay/{code}/state",
                     device_relay_state,

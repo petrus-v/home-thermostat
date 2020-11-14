@@ -2,7 +2,11 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 from decimal import Decimal
+from home_thermostat.home_thermostat.common import ThermostatMode as Mode
 
+
+class ThermostatMode(BaseModel):
+    mode: Mode = Mode.thermostat
 
 class Device(BaseModel):
     code: str = None
