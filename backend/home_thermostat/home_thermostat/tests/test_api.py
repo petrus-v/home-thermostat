@@ -252,15 +252,13 @@ def test_save_device_desired_state_wrong_format(
         ({"mode": "thermostat"}, {"mode": "thermostat"}),
     ),
 )
-
-
 def test_save_thermostat_mode(
     rollback_registry, webserver, payload, response
 ):
     r = webserver.post(
         f"/api/mode", json=payload
     )
-    assert r.status_code == 200, str(response)
+    assert r.status_code == 200, str(r)
     assert r.json() == response
 
 
@@ -271,13 +269,30 @@ def test_save_thermostat_mode(
         ("thermostat", {"mode": "thermostat"}),
     ),
 )
-def test_save_thermostat_mode(
+def test_get_thermostat_mode(
     rollback_registry, webserver, mode, response
 ):
     registry = rollback_registry
     registry.System.Parameter.set("mode", mode)
+    registry.flush()
     r = webserver.get(
         f"/api/mode",
     )
-    assert r.status_code == 200, str(response)
+    assert r.status_code == 200, str(r)
     assert r.json() == response
+
+def test_set_get_mode(
+    rollback_registry, webserver,
+):
+    registry = rollback_registry
+    mode = {"mode": "thermostat"}
+    r = webserver.post(
+        f"/api/mode", json=mode
+    )
+    assert r.status_code == 200, str(r)
+    assert r.json() == mode
+    r = webserver.get(
+        f"/api/mode",
+    )
+    assert r.status_code == 200, str(r)
+    assert r.json() == mode

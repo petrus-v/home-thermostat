@@ -153,7 +153,7 @@ def set_mode(
     ab_registry: "Registry" = Depends(get_registry),
 ) -> ThermostatMode:
     with registry_transaction(ab_registry) as registry:
-        registry.System.Parameter.set("mode", mode)
+        registry.System.Parameter.set("mode", mode.mode.value)
     return mode
 
 
