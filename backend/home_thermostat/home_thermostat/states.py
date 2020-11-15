@@ -1,13 +1,12 @@
 from datetime import datetime, time, timedelta
 from decimal import Decimal as D
 from logging import getLogger
+from typing import Optional, Union
 from uuid import uuid4
 
-from anyblok import Declarations
+from anyblok import Declarations, registry
 from anyblok.column import UUID, Boolean, Decimal, Integer, Selection, String, Time
-from anyblok.field import Function
 from anyblok.relationship import Many2One
-from anyblok_postgres.column import Jsonb
 from sqlalchemy.sql import func
 
 from .common import ThermostatMode
@@ -15,8 +14,6 @@ from .common import ThermostatMode
 logger = getLogger(__name__)
 Model = Declarations.Model
 Mixin = Declarations.Mixin
-
-from typing import Any, Optional, Type, Union
 
 
 @Declarations.register(Model)
@@ -104,10 +101,10 @@ class State(Mixin.UuidColumn, Mixin.TrackModel):
         cls,
         code: str,
     ) -> Union[
-        "registry.Iot.State.Relay",
-        "registry.Iot.State.DesiredRelay",
-        "registry.Iot.State.Thermometer",
-        "registry.Iot.State.FuelGauge",
+        "registry.Model.Iot.State.Relay",
+        "registry.Model.Iot.State.DesiredRelay",
+        "registry.Model.Iot.State.Thermometer",
+        "registry.Model.Iot.State.FuelGauge",
     ]:
         """Cast states.State -> DeviceState is done throught fastAPI"""
         Device = cls.registry.Iot.Device

@@ -1,12 +1,10 @@
 from datetime import time
 from decimal import Decimal as D
-from typing import TYPE_CHECKING, List, Type, Union
+from typing import TYPE_CHECKING, Type, Union, Any, Dict
 
 from anyblok.registry import Registry
 from anyblok_fastapi.fastapi import get_registry, registry_transaction
 from fastapi import Depends
-from sqlalchemy.orm import contains_eager
-from starlette.requests import Request
 
 from home_thermostat.home_thermostat.common import ThermostatMode as Mode
 from home_thermostat.home_thermostat.schemas.devices import (
@@ -16,8 +14,6 @@ from home_thermostat.home_thermostat.schemas.devices import (
     ThermostatMode,
     ThermostatRange,
 )
-
-from .schemas.devices import FuelGaugeState, RelayState, ThermometerState
 
 if TYPE_CHECKING:
     from anyblok import registry

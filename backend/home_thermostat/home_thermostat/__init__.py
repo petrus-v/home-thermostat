@@ -1,12 +1,11 @@
 """Blok declaration example
 """
-from typing import TYPE_CHECKING, Callable, List, Union
+from typing import TYPE_CHECKING
 
 from anyblok.blok import Blok
 from anyblok_io.blok import BlokImporter
 from fastapi.routing import APIRoute
 from starlette.responses import JSONResponse
-from starlette.routing import Route
 
 if TYPE_CHECKING:
     from types import ModuleType
