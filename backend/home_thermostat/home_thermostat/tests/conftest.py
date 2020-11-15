@@ -13,6 +13,11 @@ def water_returns(rollback_registry):
 
 
 @pytest.fixture
+def living_room(rollback_registry):
+    return get_device(rollback_registry, "temperature_sensor_28-01193a44fa4c")
+
+
+@pytest.fixture
 def fioul_gauge(rollback_registry):
     return get_device(rollback_registry, "fuel-gauge")
 
@@ -28,4 +33,7 @@ def engine(rollback_registry):
 
 
 def get_device(registry, external_id):
-    return registry.IO.Mapping.get("Model.Iot.Device", external_id)
+    device = registry.IO.Mapping.get("Model.Iot.Device", external_id)
+    if not device:
+        raise RuntimeError(f"Device not found for given external id {external_id}")
+    return device

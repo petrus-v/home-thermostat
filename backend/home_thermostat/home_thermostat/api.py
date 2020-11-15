@@ -21,7 +21,7 @@ def device_relay_state(
 ) -> RelayState:
     """HTTP GET"""
     with registry_transaction(ab_registry) as registry:
-        return RelayState.from_orm(get_device_state(registry, code, registry.Iot.State.Relay))
+        return RelayState.from_orm(registry.Iot.State.Relay.get_device_state(code))
 
 
 def device_relay_desired_state(
@@ -29,7 +29,7 @@ def device_relay_desired_state(
     ab_registry: "Registry" = Depends(get_registry),
 ) -> RelayState:
     with registry_transaction(ab_registry) as registry:
-        return RelayState.from_orm(get_device_state(registry, code, registry.Iot.State.DesiredRelay))
+        return RelayState.from_orm(registry.Iot.State.DesiredRelay.get_device_state(code))
 
 
 def device_fuel_gauge_state(
@@ -38,9 +38,7 @@ def device_fuel_gauge_state(
 ) -> FuelGaugeState:
     """HTTP GET"""
     with registry_transaction(ab_registry) as registry:
-        return FuelGaugeState.from_orm(
-            get_device_state(registry, code, registry.Iot.State.FuelGauge)
-        )
+        return FuelGaugeState.from_orm(registry.Iot.State.FuelGauge.get_device_state(code))
 
 
 def device_thermometer_state(
@@ -49,36 +47,8 @@ def device_thermometer_state(
 ) -> ThermometerState:
     """HTTP GET"""
     with registry_transaction(ab_registry) as registry:
-        return ThermometerState.from_orm(
-            get_device_state(registry, code, registry.Iot.State.Thermometer)
-        )
+        return ThermometerState.from_orm(registry.Iot.State.Thermometer.get_device_state(code))
 
-def get_device_state(
-    registry: "registry",
-    code: str,
-    State: Type["registry.Iot.State"],
-) -> Union[
-    "registry.Iot.State.Relay",
-    "registry.Iot.State.DesiredRelay",
-    "registry.Iot.State.Thermometer",
-    "registry.Iot.State.FuelGauge",
-]:
-    """Cast states.State -> DeviceState is done throught fastAPI"""
-    Device = registry.Iot.Device
-    state = (
-        State.query()
-        .join(Device)
-        .filter(Device.code == code)
-        .order_by(registry.Iot.State.create_date.desc())
-        .first()
-    )
-    if not state:
-        device = Device.query().filter_by(code=code).one()
-        # We don't wan't to instert a new state here, just creating
-        # a default instance
-        state = State(device=device)
-        registry.flush()
-    return state
 
 def get_thermostat_range(
     code: str,

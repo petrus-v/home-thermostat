@@ -2,7 +2,7 @@
 <records>
   <record external_id="burner">
     <field name="code">BURNER</field>
-    <field name="name">Bruleur</field>
+    <field name="name">Brûleur</field>
   </record>
 
   <record external_id="engine">

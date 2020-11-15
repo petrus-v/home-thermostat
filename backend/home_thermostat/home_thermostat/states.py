@@ -1,19 +1,20 @@
 from logging import getLogger
 from decimal import Decimal as D
-from datetime import time
+from datetime import time, datetime, timedelta
 from anyblok import Declarations
 from anyblok.column import UUID, Boolean, Decimal, Integer, String, Selection, Time
 from anyblok.relationship import Many2One
 from anyblok.field import Function
 from anyblok_postgres.column import Jsonb
 from uuid import uuid4
-
+from .common import ThermostatMode
+from sqlalchemy.sql import func
 
 logger = getLogger(__name__)
 Model = Declarations.Model
 Mixin = Declarations.Mixin
 
-from typing import Any, Union, Type
+from typing import Any, Union, Type, Optional
 
 
 
@@ -33,6 +34,22 @@ class Range(Mixin.UuidColumn, Mixin.TrackModel):
     end: time = Time(default=time(hour=23, minute=59))
     celsius: D = Decimal(label="Thermometer (°C)")
 
+    @classmethod
+    def get_desired_living_room_temperature(cls, date: datetime) -> Optional[D]:
+        if not date:
+            date = datetime.now()
+        range_ = (
+            cls.query()
+                .distinct(cls.code)
+                .filter(cls.start <= date.time(), cls.end > date.time())
+                .filter(cls.create_date < date)
+                .order_by(cls.code.desc())
+                .order_by(cls.create_date.desc())
+                .first()
+        )
+        if range_:
+            return range_.celsius
+        return None
 
 @Declarations.register(Model.Iot)
 class Device(Mixin.UuidColumn):
@@ -79,6 +96,33 @@ class State(Mixin.UuidColumn, Mixin.TrackModel):
 
         return query
 
+    @classmethod
+    def get_device_state(
+        cls,
+        code: str,
+    ) -> Union[
+        "registry.Iot.State.Relay",
+        "registry.Iot.State.DesiredRelay",
+        "registry.Iot.State.Thermometer",
+        "registry.Iot.State.FuelGauge",
+    ]:
+        """Cast states.State -> DeviceState is done throught fastAPI"""
+        Device = cls.registry.Iot.Device
+        state = (
+            cls.query()
+            .join(Device)
+            .filter(Device.code == code)
+            .order_by(cls.registry.Iot.State.create_date.desc())
+            .first()
+        )
+        if not state:
+            device = Device.query().filter_by(code=code).one()
+            # We don't want to instert a new state here, just creating
+            # a default instance
+            state = cls(device=device)
+            cls.registry.flush()
+        return state
+
 
 @Declarations.register(Model.Iot.State)
 class Relay(Model.Iot.State):
@@ -112,6 +156,53 @@ class DesiredRelay(Model.Iot.State):
     off"""
 
 
+    @classmethod
+    def get_device_state(cls, code: str, date: datetime = None) -> "DesiredRelay":
+        """return desired state for given device code"""
+        mode = ThermostatMode(cls.registry.System.Parameter.get("mode", default="manual"))
+        if mode is ThermostatMode.manual:
+            return super().get_device_state(code)
+        else:
+            if not date:
+                date = datetime.now()
+            return {
+                "BURNER": cls.get_burner_thermostat_desired_state,
+                "ENGINE": cls.get_engine_thermostat_desired_state,
+            }[code](date)
+
+
+    @classmethod
+    def get_burner_thermostat_desired_state(cls, date: datetime) -> "DesiredRelay":
+        Thermometer = cls.registry.Iot.State.Thermometer
+        Range = cls.registry.Iot.Thermostat.Range
+        celsius_avg = Thermometer.get_living_room_avg(date=date)
+        if not celsius_avg:
+            return cls(is_open=True)
+        celsius_desired = Range.get_desired_living_room_temperature(date)
+        if celsius_avg <= celsius_desired:
+            return cls(is_open=False)
+        return cls(is_open=True)
+
+    @classmethod
+    def get_engine_thermostat_desired_state(cls, date: datetime, delta_minutes=120) -> "DesiredRelay":
+        """If burner relay was on in last delta_minutes, engine must turn on"""
+        Relay = cls.registry.Iot.State.Relay
+        Device = cls.registry.Iot.Device
+        count_states = (
+            Relay.query()
+                .join(Device)
+                .filter(
+                    Relay.create_date >
+                    date - timedelta(minutes=delta_minutes),
+                    Relay.create_date <=
+                    date,
+                    Device.code == "BURNER",
+                    Relay.is_open == False
+                )
+        )
+        return cls(is_open=count_states.count() == 0)
+
+
 @Declarations.register(Model.Iot.State)
 class Thermometer(Model.Iot.State):
 
@@ -126,6 +217,28 @@ class Thermometer(Model.Iot.State):
 
     celsius: D = Decimal(label="Thermometer (°C)")
 
+    @classmethod
+    def get_living_room_avg(cls, date: datetime, minutes: int = 15):
+        if not date:
+            date = datetime.now()
+
+        Device = cls.registry.Iot.Device
+        # query = Thermometer.query(func.avg(Thermometer.celsius).label('average')).join(Device).filter(Device.code == "28-01193a44fa4c").filter(cls.registry.Iot.State.create_date >= date - timedelta(minutes=15)).group_by(Device.code)
+        return (
+            cls.query(
+                    func.avg(cls.celsius).label('average')
+                )
+                .join(Device)
+                .filter(Device.code == "28-01193a44fa4c")  # Salon
+                .filter(
+                    cls.create_date >
+                    date - timedelta(minutes=minutes),
+                    cls.create_date <=
+                    date
+                )
+                .group_by(Device.code)
+                .scalar()
+        )
 
 @Declarations.register(Model.Iot.State)
 class FuelGauge(Model.Iot.State):
