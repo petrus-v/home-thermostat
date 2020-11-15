@@ -29,9 +29,7 @@ class HomeThermostat(Blok, BlokImporter):
         from .schemas import devices  # noqa
 
     @classmethod
-    def reload_declaration_module(
-        cls, reload: "Callable[[ModuleType], None]"
-    ) -> None:
+    def reload_declaration_module(cls, reload: "Callable[[ModuleType], None]") -> None:
         """Python module to import while reloading server (ie when
         adding Blok at runtime
         """
@@ -63,8 +61,13 @@ class HomeThermostat(Blok, BlokImporter):
             get_mode,
         )
         from .schemas.devices import (
-            RelayState, ThermometerState, FuelGaugeState, ThermostatMode, ThermostatRange
+            RelayState,
+            ThermometerState,
+            FuelGaugeState,
+            ThermostatMode,
+            ThermostatRange,
         )
+
         self.registry.declare_routes(
             {
                 "GET/api/mode": APIRoute(

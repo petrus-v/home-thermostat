@@ -13,9 +13,7 @@ from setuptools import find_packages, setup
 version: str = "0.1.0"
 here: str = os.path.abspath(os.path.dirname(__file__))
 
-with open(
-    os.path.join(here, "README.md"), "r", encoding="utf-8"
-) as readme_file:
+with open(os.path.join(here, "README.md"), "r", encoding="utf-8") as readme_file:
     readme = readme_file.read()
 
 requirements: "List[str]" = [
@@ -38,9 +36,7 @@ setup(
     url="https://github.com/petrus-v/anyblok-background-tasks",
     packages=find_packages(),
     entry_points={
-        "bloks": [
-            "home_thermostat=home_thermostat.home_thermostat:HomeThermostat"
-        ]
+        "bloks": ["home_thermostat=home_thermostat.home_thermostat:HomeThermostat"]
     },
     include_package_data=True,
     install_requires=requirements,

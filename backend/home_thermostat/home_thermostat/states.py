@@ -17,7 +17,6 @@ Mixin = Declarations.Mixin
 from typing import Any, Union, Type, Optional
 
 
-
 @Declarations.register(Model)
 class Iot:
     """Namespace for Iot"""
@@ -26,6 +25,7 @@ class Iot:
 @Declarations.register(Model.Iot)
 class Thermostat:
     """Namespace for Iot.Thermostat"""
+
 
 @Declarations.register(Model.Iot.Thermostat)
 class Range(Mixin.UuidColumn, Mixin.TrackModel):
@@ -40,16 +40,17 @@ class Range(Mixin.UuidColumn, Mixin.TrackModel):
             date = datetime.now()
         range_ = (
             cls.query()
-                .distinct(cls.code)
-                .filter(cls.start <= date.time(), cls.end > date.time())
-                .filter(cls.create_date < date)
-                .order_by(cls.code.desc())
-                .order_by(cls.create_date.desc())
-                .first()
+            .distinct(cls.code)
+            .filter(cls.start <= date.time(), cls.end > date.time())
+            .filter(cls.create_date < date)
+            .order_by(cls.code.desc())
+            .order_by(cls.create_date.desc())
+            .first()
         )
         if range_:
             return range_.celsius
         return None
+
 
 @Declarations.register(Model.Iot)
 class Device(Mixin.UuidColumn):
@@ -155,11 +156,12 @@ class DesiredRelay(Model.Iot.State):
     """Current circuit state. is_open == True means circuit open, it's turned
     off"""
 
-
     @classmethod
     def get_device_state(cls, code: str, date: datetime = None) -> "DesiredRelay":
         """return desired state for given device code"""
-        mode = ThermostatMode(cls.registry.System.Parameter.get("mode", default="manual"))
+        mode = ThermostatMode(
+            cls.registry.System.Parameter.get("mode", default="manual")
+        )
         if mode is ThermostatMode.manual:
             return super().get_device_state(code)
         else:
@@ -169,7 +171,6 @@ class DesiredRelay(Model.Iot.State):
                 "BURNER": cls.get_burner_thermostat_desired_state,
                 "ENGINE": cls.get_engine_thermostat_desired_state,
             }[code](date)
-
 
     @classmethod
     def get_burner_thermostat_desired_state(cls, date: datetime) -> "DesiredRelay":
@@ -184,21 +185,21 @@ class DesiredRelay(Model.Iot.State):
         return cls(is_open=True)
 
     @classmethod
-    def get_engine_thermostat_desired_state(cls, date: datetime, delta_minutes=120) -> "DesiredRelay":
+    def get_engine_thermostat_desired_state(
+        cls, date: datetime, delta_minutes=120
+    ) -> "DesiredRelay":
         """If burner relay was on in last delta_minutes, engine must turn on"""
         Relay = cls.registry.Iot.State.Relay
         Device = cls.registry.Iot.Device
         count_states = (
             Relay.query()
-                .join(Device)
-                .filter(
-                    Relay.create_date >
-                    date - timedelta(minutes=delta_minutes),
-                    Relay.create_date <=
-                    date,
-                    Device.code == "BURNER",
-                    Relay.is_open == False
-                )
+            .join(Device)
+            .filter(
+                Relay.create_date > date - timedelta(minutes=delta_minutes),
+                Relay.create_date <= date,
+                Device.code == "BURNER",
+                Relay.is_open == False,
+            )
         )
         return cls(is_open=count_states.count() == 0)
 
@@ -225,20 +226,17 @@ class Thermometer(Model.Iot.State):
         Device = cls.registry.Iot.Device
         # query = Thermometer.query(func.avg(Thermometer.celsius).label('average')).join(Device).filter(Device.code == "28-01193a44fa4c").filter(cls.registry.Iot.State.create_date >= date - timedelta(minutes=15)).group_by(Device.code)
         return (
-            cls.query(
-                    func.avg(cls.celsius).label('average')
-                )
-                .join(Device)
-                .filter(Device.code == "28-01193a44fa4c")  # Salon
-                .filter(
-                    cls.create_date >
-                    date - timedelta(minutes=minutes),
-                    cls.create_date <=
-                    date
-                )
-                .group_by(Device.code)
-                .scalar()
+            cls.query(func.avg(cls.celsius).label("average"))
+            .join(Device)
+            .filter(Device.code == "28-01193a44fa4c")  # Salon
+            .filter(
+                cls.create_date > date - timedelta(minutes=minutes),
+                cls.create_date <= date,
+            )
+            .group_by(Device.code)
+            .scalar()
         )
+
 
 @Declarations.register(Model.Iot.State)
 class FuelGauge(Model.Iot.State):

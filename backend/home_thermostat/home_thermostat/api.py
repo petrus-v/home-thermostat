@@ -9,7 +9,11 @@ from anyblok.registry import Registry
 from sqlalchemy.orm import contains_eager
 from home_thermostat.home_thermostat.common import ThermostatMode as Mode
 from home_thermostat.home_thermostat.schemas.devices import (
-    RelayState, ThermometerState, FuelGaugeState, ThermostatMode, ThermostatRange
+    RelayState,
+    ThermometerState,
+    FuelGaugeState,
+    ThermostatMode,
+    ThermostatRange,
 )
 
 if TYPE_CHECKING:
@@ -30,7 +34,9 @@ def device_relay_desired_state(
     ab_registry: "Registry" = Depends(get_registry),
 ) -> RelayState:
     with registry_transaction(ab_registry) as registry:
-        return RelayState.from_orm(registry.Iot.State.DesiredRelay.get_device_state(code))
+        return RelayState.from_orm(
+            registry.Iot.State.DesiredRelay.get_device_state(code)
+        )
 
 
 def device_fuel_gauge_state(
@@ -39,7 +45,9 @@ def device_fuel_gauge_state(
 ) -> FuelGaugeState:
     """HTTP GET"""
     with registry_transaction(ab_registry) as registry:
-        return FuelGaugeState.from_orm(registry.Iot.State.FuelGauge.get_device_state(code))
+        return FuelGaugeState.from_orm(
+            registry.Iot.State.FuelGauge.get_device_state(code)
+        )
 
 
 def device_thermometer_state(
@@ -48,7 +56,9 @@ def device_thermometer_state(
 ) -> ThermometerState:
     """HTTP GET"""
     with registry_transaction(ab_registry) as registry:
-        return ThermometerState.from_orm(registry.Iot.State.Thermometer.get_device_state(code))
+        return ThermometerState.from_orm(
+            registry.Iot.State.Thermometer.get_device_state(code)
+        )
 
 
 def get_thermostat_range(
@@ -59,9 +69,9 @@ def get_thermostat_range(
 
         range_ = (
             registry.Iot.Thermostat.Range.query()
-                .filter_by(code=code)
-                .order_by(registry.Iot.Thermostat.Range.create_date.desc())
-                .first()
+            .filter_by(code=code)
+            .order_by(registry.Iot.Thermostat.Range.create_date.desc())
+            .first()
         )
         if not range_:
             # We don't want to instert a new state range, just creating
@@ -73,6 +83,7 @@ def get_thermostat_range(
             )
         return ThermostatRange.from_orm(range_)
 
+
 def set_thermostat_range(
     code: str,
     thermostat_range: ThermostatRange,
@@ -80,10 +91,9 @@ def set_thermostat_range(
 ) -> ThermostatRange:
     with registry_transaction(ab_registry) as registry:
         return ThermostatRange.from_orm(
-            registry.Iot.Thermostat.Range.insert(
-                code=code, **dict(thermostat_range)
-            )
+            registry.Iot.Thermostat.Range.insert(code=code, **dict(thermostat_range))
         )
+
 
 def save_device_relay_state(
     code: str,
@@ -106,6 +116,7 @@ def save_device_fuel_gauge_state(
             set_device_state(registry, code, state, registry.Iot.State.FuelGauge)
         )
 
+
 def save_device_thermometer_state(
     code: str,
     state: ThermometerState,
@@ -113,9 +124,7 @@ def save_device_thermometer_state(
 ) -> ThermometerState:
     with registry_transaction(ab_registry) as registry:
         return ThermometerState.from_orm(
-            set_device_state(
-                registry, code, state, registry.Iot.State.Thermometer
-            )
+            set_device_state(registry, code, state, registry.Iot.State.Thermometer)
         )
 
 
@@ -126,9 +135,7 @@ def save_device_relay_desired_state(
 ) -> RelayState:
     with registry_transaction(ab_registry) as registry:
         return RelayState.from_orm(
-            set_device_state(
-                registry, code, state, registry.Iot.State.DesiredRelay
-            )
+            set_device_state(registry, code, state, registry.Iot.State.DesiredRelay)
         )
 
 
@@ -151,6 +158,7 @@ def set_device_state(
     registry.flush()
     return state
 
+
 def set_mode(
     mode: ThermostatMode,
     ab_registry: "Registry" = Depends(get_registry),
@@ -165,7 +173,5 @@ def get_mode(
 ) -> ThermostatMode:
     with registry_transaction(ab_registry) as registry:
         return ThermostatMode(
-            mode=registry.System.Parameter.get(
-                "mode", default=Mode.manual.value
-            )
+            mode=registry.System.Parameter.get("mode", default=Mode.manual.value)
         )

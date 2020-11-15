@@ -5,6 +5,7 @@ from decimal import Decimal
 from home_thermostat.home_thermostat.common import ThermostatMode as Mode
 from datetime import time
 
+
 class ThermostatMode(BaseModel):
     mode: Mode = Mode.thermostat
 
@@ -16,6 +17,7 @@ class ThermostatRange(BaseModel):
 
     class Config:
         orm_mode = True
+
 
 class Device(BaseModel):
     code: str = None
