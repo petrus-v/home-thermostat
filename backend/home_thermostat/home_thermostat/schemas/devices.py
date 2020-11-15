@@ -3,10 +3,19 @@ from typing import Optional
 from datetime import datetime
 from decimal import Decimal
 from home_thermostat.home_thermostat.common import ThermostatMode as Mode
-
+from datetime import time
 
 class ThermostatMode(BaseModel):
     mode: Mode = Mode.thermostat
+
+
+class ThermostatRange(BaseModel):
+    start: time = time(hour=0, minute=0)
+    end: time = time(hour=23, minute=59)
+    celsius: Decimal = Decimal("18.5")
+
+    class Config:
+        orm_mode = True
 
 class Device(BaseModel):
     code: str = None

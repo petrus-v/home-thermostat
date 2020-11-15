@@ -296,3 +296,31 @@ def test_set_get_mode(
     )
     assert r.status_code == 200, str(r)
     assert r.json() == mode
+
+def test_set_test_range(
+    rollback_registry, webserver
+):
+    registry = rollback_registry
+    data = {"start": "08:11", "end": "3:22:30", "celsius": 15.5}
+    expected_data = {"start": "08:11:00", "end": "03:22:30", "celsius": 15.5}
+    r = webserver.post(
+        f"/api/thermostat/range/22",
+        json=data
+    )
+    assert r.status_code == 200, str(r)
+    assert r.json() == expected_data
+
+    data2 = {"start": "08:23", "end": "23:1", "celsius": 20.5}
+    expected_data2 = {"start": "08:23:00", "end": "23:01:00", "celsius": 20.5}
+    r = webserver.post(
+        f"/api/thermostat/range/22",
+        json=data2
+    )
+    assert r.status_code == 200, str(r)
+    assert r.json() == expected_data2
+
+    r = webserver.get(
+        f"/api/thermostat/range/22",
+    )
+    assert r.status_code == 200, str(r)
+    assert r.json() == expected_data2

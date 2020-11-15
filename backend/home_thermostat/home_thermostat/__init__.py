@@ -57,11 +57,13 @@ class HomeThermostat(Blok, BlokImporter):
             save_device_thermometer_state,
             device_relay_desired_state,
             save_device_relay_desired_state,
+            get_thermostat_range,
+            set_thermostat_range,
             set_mode,
             get_mode,
         )
         from .schemas.devices import (
-            RelayState, ThermometerState, FuelGaugeState, ThermostatMode
+            RelayState, ThermometerState, FuelGaugeState, ThermostatMode, ThermostatRange
         )
         self.registry.declare_routes(
             {
@@ -134,6 +136,20 @@ class HomeThermostat(Blok, BlokImporter):
                     methods=["POST"],
                     response_class=JSONResponse,
                     response_model=ThermometerState,
+                ),
+                "GET/api/thermostat/range/{code}": APIRoute(
+                    "/api/thermostat/range/{code}",
+                    get_thermostat_range,
+                    methods=["GET"],
+                    response_class=JSONResponse,
+                    response_model=ThermostatRange,
+                ),
+                "POST/api/thermostat/range/{code}": APIRoute(
+                    "/api/thermostat/range/{code}",
+                    set_thermostat_range,
+                    methods=["POST"],
+                    response_class=JSONResponse,
+                    response_model=ThermostatRange,
                 ),
             }
         )

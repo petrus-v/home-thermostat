@@ -12,7 +12,7 @@
 
   <record external_id="temperature_sensor_28-01193a44fa4c">
     <field name="code">28-01193a44fa4c</field>
-    <field name="name">Un used</field>
+    <field name="name">Salon</field>
   </record>
 
   <record external_id="temperature_sensor_28-01193a4a4aa2">
@@ -32,7 +32,7 @@
 
   <record external_id="temperature_sensor_28-01193a503a1a">
     <field name="code">28-01193a503a1a</field>
-    <field name="name">Un-used</field>
+    <field name="name">Extérieur</field>
   </record>
 
   <record external_id="fuel-gauge">

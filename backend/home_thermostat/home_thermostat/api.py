@@ -8,7 +8,7 @@ from sqlalchemy.orm import contains_eager
 import time
 from home_thermostat.home_thermostat.common import ThermostatMode as Mode
 from home_thermostat.home_thermostat.schemas.devices import (
-    RelayState, ThermometerState, FuelGaugeState, ThermostatMode
+    RelayState, ThermometerState, FuelGaugeState, ThermostatMode, ThermostatRange
 )
 
 if TYPE_CHECKING:
@@ -53,7 +53,6 @@ def device_thermometer_state(
             get_device_state(registry, code, registry.Iot.State.Thermometer)
         )
 
-
 def get_device_state(
     registry: "registry",
     code: str,
@@ -81,6 +80,35 @@ def get_device_state(
         registry.flush()
     return state
 
+def get_thermostat_range(
+    code: str,
+    ab_registry: "Registry" = Depends(get_registry),
+) -> ThermostatRange:
+    with registry_transaction(ab_registry) as registry:
+
+        range_ = (
+            registry.Iot.Thermostat.Range.query()
+                .filter_by(code=code)
+                .order_by(registry.Iot.Thermostat.Range.create_date.desc())
+                .first()
+        )
+        if not range_:
+            # We don't wan't to instert a new state range, just creating
+            # a default instance
+            range_ = registry.Iot.Thermostat.Range()
+        return ThermostatRange.from_orm(range_)
+
+def set_thermostat_range(
+    code: str,
+    thermostat_range: ThermostatRange,
+    ab_registry: "Registry" = Depends(get_registry),
+) -> ThermostatRange:
+    with registry_transaction(ab_registry) as registry:
+        return ThermostatRange.from_orm(
+            registry.Iot.Thermostat.Range.insert(
+                code=code, **dict(thermostat_range)
+            )
+        )
 
 def save_device_relay_state(
     code: str,

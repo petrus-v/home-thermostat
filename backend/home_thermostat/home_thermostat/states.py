@@ -1,7 +1,8 @@
 from logging import getLogger
 from decimal import Decimal as D
+from datetime import time
 from anyblok import Declarations
-from anyblok.column import UUID, Boolean, Decimal, Integer, String, Selection
+from anyblok.column import UUID, Boolean, Decimal, Integer, String, Selection, Time
 from anyblok.relationship import Many2One
 from anyblok.field import Function
 from anyblok_postgres.column import Jsonb
@@ -14,12 +15,6 @@ Mixin = Declarations.Mixin
 
 from typing import Any, Union, Type
 
-import importlib
-
-
-def dynamic_import(class_path: str) -> Any:
-    module, class_name = class_path.split(":")
-    return getattr(importlib.import_module(module), class_name)
 
 
 @Declarations.register(Model)
@@ -28,9 +23,21 @@ class Iot:
 
 
 @Declarations.register(Model.Iot)
+class Thermostat:
+    """Namespace for Iot.Thermostat"""
+
+@Declarations.register(Model.Iot.Thermostat)
+class Range(Mixin.UuidColumn, Mixin.TrackModel):
+    code: str = String(label="Code", index=True, nullable=False)
+    start: time = Time(default=time(hour=0, minute=0))
+    end: time = Time(default=time(hour=23, minute=59))
+    celsius: D = Decimal(label="Thermometer (°C)")
+
+
+@Declarations.register(Model.Iot)
 class Device(Mixin.UuidColumn):
     name: str = String(label="Name", nullable=False)
-    code: str = String(label="Code", unique=True, nullable=False)
+    code: str = String(label="Code", unique=True, index=True, nullable=False)
 
 
 @Declarations.register(Model.Iot)
