@@ -1,20 +1,22 @@
-from logging import getLogger
+from datetime import datetime, time, timedelta
 from decimal import Decimal as D
-from datetime import time, datetime, timedelta
-from anyblok import Declarations
-from anyblok.column import UUID, Boolean, Decimal, Integer, String, Selection, Time
-from anyblok.relationship import Many2One
-from anyblok.field import Function
-from anyblok_postgres.column import Jsonb
+from logging import getLogger
 from uuid import uuid4
-from .common import ThermostatMode
+
+from anyblok import Declarations
+from anyblok.column import UUID, Boolean, Decimal, Integer, Selection, String, Time
+from anyblok.field import Function
+from anyblok.relationship import Many2One
+from anyblok_postgres.column import Jsonb
 from sqlalchemy.sql import func
+
+from .common import ThermostatMode
 
 logger = getLogger(__name__)
 Model = Declarations.Model
 Mixin = Declarations.Mixin
 
-from typing import Any, Union, Type, Optional
+from typing import Any, Optional, Type, Union
 
 
 @Declarations.register(Model)

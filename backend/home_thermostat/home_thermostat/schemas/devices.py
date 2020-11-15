@@ -1,9 +1,10 @@
-from pydantic import BaseModel
-from typing import Optional
-from datetime import datetime
+from datetime import datetime, time
 from decimal import Decimal
+from typing import Optional
+
+from pydantic import BaseModel
+
 from home_thermostat.home_thermostat.common import ThermostatMode as Mode
-from datetime import time
 
 
 class ThermostatMode(BaseModel):

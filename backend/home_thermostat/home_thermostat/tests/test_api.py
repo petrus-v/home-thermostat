@@ -1,11 +1,13 @@
+from datetime import datetime
+from decimal import Decimal as D
+
 import pytest
 import respx
 from anyblok_fastapi.conftest import webserver  # noqa: F401
-from home_thermostat.home_thermostat.schemas.devices import RelayState
-from datetime import datetime
-from sqlalchemy.orm.exc import NoResultFound
-from decimal import Decimal as D
 from conftest import get_device
+from sqlalchemy.orm.exc import NoResultFound
+
+from home_thermostat.home_thermostat.schemas.devices import RelayState
 
 # from testfixtures import Replace, test_datetime
 

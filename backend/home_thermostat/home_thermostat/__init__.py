@@ -2,15 +2,16 @@
 """
 from typing import TYPE_CHECKING, Callable, List, Union
 
+from anyblok.blok import Blok
+from anyblok_io.blok import BlokImporter
 from fastapi.routing import APIRoute
 from starlette.responses import JSONResponse
 from starlette.routing import Route
-from anyblok_io.blok import BlokImporter
-from anyblok.blok import Blok
 
 if TYPE_CHECKING:
     from types import ModuleType
     from typing import Callable
+
     from anyblok.version import AnyBlokVersion
 
 
@@ -24,8 +25,8 @@ class HomeThermostat(Blok, BlokImporter):
     @classmethod
     def import_declaration_module(cls) -> None:
         """Python module to import in the given order at start-up"""
-        from . import states  # noqa
         from . import common  # noqa
+        from . import states  # noqa
         from .schemas import devices  # noqa
 
     @classmethod
@@ -33,8 +34,8 @@ class HomeThermostat(Blok, BlokImporter):
         """Python module to import while reloading server (ie when
         adding Blok at runtime
         """
-        from . import states  # noqa
         from . import common  # noqa
+        from . import states  # noqa
         from .schemas import devices  # noqa
 
         reload(states)
@@ -47,23 +48,23 @@ class HomeThermostat(Blok, BlokImporter):
 
     def load(self) -> None:
         from .api import (
-            device_relay_state,
             device_fuel_gauge_state,
-            device_thermometer_state,
-            save_device_relay_state,
-            save_device_fuel_gauge_state,
-            save_device_thermometer_state,
             device_relay_desired_state,
-            save_device_relay_desired_state,
-            get_thermostat_range,
-            set_thermostat_range,
-            set_mode,
+            device_relay_state,
+            device_thermometer_state,
             get_mode,
+            get_thermostat_range,
+            save_device_fuel_gauge_state,
+            save_device_relay_desired_state,
+            save_device_relay_state,
+            save_device_thermometer_state,
+            set_mode,
+            set_thermostat_range,
         )
         from .schemas.devices import (
+            FuelGaugeState,
             RelayState,
             ThermometerState,
-            FuelGaugeState,
             ThermostatMode,
             ThermostatRange,
         )

@@ -1,6 +1,8 @@
-import pytest
 from datetime import datetime, time
 from decimal import Decimal as D
+
+import pytest
+
 from home_thermostat.home_thermostat.common import ThermostatMode as Mode
 
 
