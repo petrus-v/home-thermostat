@@ -21,6 +21,8 @@
         <b-field label="Température minimale (°C)">
           <b-numberinput
             placeholder="T°C minimale..."
+            step="0.5"
+            min-step="0.1"
             v-model="minimalTemperatureState.celsius"
             v-on:input="onChangeMinimalTemperature"
             :loading="isMinimalTemperatureLoading"
@@ -32,8 +34,9 @@
             placeholder="Début..."
             icon="clock"
             hour-format="24"
-            :increment-minutes="15"
+            :increment-minutes="5"
             locale="fr-FR"
+            :auto-switch="false"
             hours-label="Heures"
             v-model="startTime"
             :loading="isConfortRangeLoading"
@@ -44,7 +47,7 @@
             placeholder="Fin..."
             icon="clock"
             hour-format="24"
-            :increment-minutes="15"
+            :increment-minutes="5"
             locale="fr-FR"
             :auto-switch="false"
             hours-label="Heures"
@@ -56,7 +59,7 @@
           <b-numberinput
             placeholder="T°C confort..."
             controls-position="compact"
-            v-model="confortRange.celsius"
+            v-model="confortCelsius"
             :loading="isConfortRangeLoading"
             :disabled="isConfortRangeLoading"
             :min="minimalTemperatureState.celsius"
@@ -240,14 +243,22 @@ export default {
     };
   },
   computed: {
+    confortCelsius: {
+      get() {
+        return this.confortRange.celsius;
+      },
+      set(value) {
+        this.confortRange.celsius = value;
+        this.onChangeConfortRange();
+      },
+    },
     startTime: {
       get() {
         return this.parseTime(this.confortRange.start);
       },
       set(value) {
         this.confortRange.start = this.dateToStr(value);
-        const self = this;
-        self.onChangeConfortRange();
+        this.onChangeConfortRange();
       },
     },
     endTime: {
@@ -339,7 +350,7 @@ export default {
     },
     onChangeConfortRange: debounce(function () {
       this.setConfortRange();
-    }, 3000), // 3s
+    }, 2000), // 2s
     onChangeMode(newValue) {
       this.setMode(newValue);
     },

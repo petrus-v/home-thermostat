@@ -1,11 +1,12 @@
 from typing import List, TYPE_CHECKING, Union, Type
 from .schemas.devices import RelayState, ThermometerState, FuelGaugeState
+from datetime import time
+from decimal import Decimal as D
 from starlette.requests import Request
 from fastapi import Depends
 from anyblok_fastapi.fastapi import get_registry, registry_transaction
 from anyblok.registry import Registry
 from sqlalchemy.orm import contains_eager
-import time
 from home_thermostat.home_thermostat.common import ThermostatMode as Mode
 from home_thermostat.home_thermostat.schemas.devices import (
     RelayState, ThermometerState, FuelGaugeState, ThermostatMode, ThermostatRange
@@ -63,9 +64,13 @@ def get_thermostat_range(
                 .first()
         )
         if not range_:
-            # We don't wan't to instert a new state range, just creating
+            # We don't want to instert a new state range, just creating
             # a default instance
-            range_ = registry.Iot.Thermostat.Range()
+            range_ = registry.Iot.Thermostat.Range(
+                start=time(hour=0, minute=0),
+                end=time(hour=23, minute=59),
+                celsius=D("16"),
+            )
         return ThermostatRange.from_orm(range_)
 
 def set_thermostat_range(
