@@ -36,15 +36,35 @@ describe("Home", () => {
       "/api/mode": Promise.resolve({
         mode: "manual",
       }),
+      "api/thermostat/range/00": Promise.resolve({
+        start: "00:0:00",
+        end: "23:59:59",
+        celsius: 16.5,
+      }),
+      "api/thermostat/range/10": Promise.resolve({
+        start: "01:15:00",
+        end: "12:45:00",
+        celsius: 21.5,
+      }),
     });
     const departure_uri = `/api/device/thermometer/${global.DEPARTURE}/state`;
     const arrival_uri = `/api/device/thermometer/${global.ARRIVAL}/state`;
+    const living_uri = `/api/device/thermometer/${global.LIVING}/state`;
+    const outside_uri = `/api/device/thermometer/${global.OUTSIDE}/state`;
     API_RESULTS[departure_uri] = Promise.resolve({
       celsius: 12.3,
       create_date: "2020-11-10T19:25:32.855879",
     });
     API_RESULTS[arrival_uri] = Promise.resolve({
       celsius: 22.8,
+      create_date: "2020-10-10T19:25:32.855879",
+    });
+    API_RESULTS[living_uri] = Promise.resolve({
+      celsius: 22.8,
+      create_date: "2020-10-10T19:25:32.855879",
+    });
+    API_RESULTS[outside_uri] = Promise.resolve({
+      celsius: 5.8,
       create_date: "2020-10-10T19:25:32.855879",
     });
   });
@@ -61,7 +81,9 @@ describe("Home", () => {
     expect(wrapper.vm.burnerStateDate).toBe("12/11/2020 à 19:25");
     expect(wrapper.vm.departureDate).toBe("10/11/2020 à 19:25");
     expect(wrapper.vm.arrivalDate).toBe("10/10/2020 à 19:25");
-    // // On my FR laptop
+    expect(wrapper.vm.livingRoomDate).toBe("10/10/2020 à 19:25");
+    expect(wrapper.vm.outsideDate).toBe("10/10/2020 à 19:25");
+    // // On my FR laptop (witout Docker CT)
     // expect(wrapper.vm.desiredEngineStateDate).toBe("12/11/2020 à 22:50");
     // expect(wrapper.vm.desiredBurnerStateDate).toBe("13/11/2020 à 00:12");
     // expect(wrapper.vm.engineStateDate).toBe("12/11/2020 à 19:12");

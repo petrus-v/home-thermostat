@@ -13,7 +13,7 @@
     "buefy": "*",
     "ci": "*",
     "core-js": "*",
-    "lodash": "*",
+    "lodash.debounce": "*",
     "vue": "*",
     "vue-router": "*",
     "vuex": "*"

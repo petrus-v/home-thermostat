@@ -15,6 +15,8 @@ Vue.use(Buefy, {
 // arrival: "28-01193a77449f",
 global.DEPARTURE = "28-01193a4a4aa2";
 global.ARRIVAL = "28-01193a77449f";
+global.LIVING = "28-01193a44fa4c";
+global.OUTSIDE = "28-01193a503a1a";
 
 new Vue({
   router,

@@ -66,6 +66,8 @@ exports[`Home mount Home view 1`] = `
       </div>
     </div>
      
+    <!---->
+     
     <div
       class="box"
     >
@@ -226,6 +228,1216 @@ exports[`Home mount Home view 1`] = `
       >
         Températures
       </h2>
+       
+      <div
+        class="field"
+      >
+        <label
+          class="label"
+        >
+          Intérieur
+        </label>
+        <div
+          class="field-body"
+        >
+          <div
+            class="field has-addons"
+          >
+            <!---->
+            <div
+              class="b-slider is-danger is-disabled"
+            >
+              <div
+                class="b-slider-track"
+              >
+                <div
+                  class="b-slider-fill"
+                  style="width: 58.153846153846146%; left: 0%;"
+                />
+                <div
+                  class="b-slider-tick"
+                  style="left: 1.5384615384615385%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 3.076923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 4.615384615384616%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 6.153846153846154%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 7.6923076923076925%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 9.230769230769232%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 10.76923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 12.307692307692308%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 13.846153846153847%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 15.384615384615385%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 16.923076923076923%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 18.461538461538463%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 20%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 21.53846153846154%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 23.076923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 24.615384615384617%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 26.153846153846157%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 27.692307692307693%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 29.230769230769234%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 30.76923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 32.30769230769231%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 33.84615384615385%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 35.38461538461539%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 36.92307692307693%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 38.46153846153847%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 40%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 41.53846153846154%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 43.07692307692308%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 44.61538461538462%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 46.15384615384615%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 47.69230769230769%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 49.23076923076923%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 50.76923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 52.307692307692314%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 53.84615384615385%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 55.38461538461539%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 56.92307692307692%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 58.46153846153847%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 60%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 61.53846153846154%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 63.07692307692307%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 64.61538461538461%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 66.15384615384615%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 67.6923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 69.23076923076923%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 70.76923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 72.3076923076923%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 73.84615384615385%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 75.38461538461539%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 76.92307692307693%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 78.46153846153847%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 80%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 81.53846153846153%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 83.07692307692308%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 84.61538461538461%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 86.15384615384616%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 87.6923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 89.23076923076924%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 90.76923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 92.3076923076923%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 93.84615384615384%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 95.38461538461539%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 96.92307692307692%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 98.46153846153847%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick is-tick-hidden"
+                  style="left: 0%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    -15
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 7.6923076923076925%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    -10
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 15.384615384615385%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    -5
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 23.076923076923077%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    0
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 30.76923076923077%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    5
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 38.46153846153847%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    10
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 46.15384615384615%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    15
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 53.84615384615385%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    20
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 61.53846153846154%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    25
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 69.23076923076923%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    30
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 76.92307692307693%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    35
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 84.61538461538461%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    40
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 92.3076923076923%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    45
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick is-tick-hidden"
+                  style="left: 100%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    50
+                  </span>
+                </div>
+                <div
+                  class="b-slider-thumb-wrapper has-indicator"
+                  style="left: 58.153846153846146%;"
+                >
+                  <span
+                    class="b-tooltip is-danger is-top is-medium"
+                  >
+                    <transition-stub
+                      name="fade"
+                    >
+                      <div
+                        class="tooltip-content"
+                        style="display: none;"
+                      >
+                        22.8
+                      </div>
+                    </transition-stub>
+                    <div
+                      class="tooltip-trigger"
+                    >
+                      <div
+                        aria-disabled="true"
+                        aria-orientation="horizontal"
+                        aria-valuemax="50"
+                        aria-valuemin="-15"
+                        aria-valuenow="22.8"
+                        class="b-slider-thumb"
+                        role="slider"
+                      >
+                        <span>
+                          22.8
+                        </span>
+                      </div>
+                    </div>
+                  </span>
+                </div>
+                <!---->
+              </div>
+            </div>
+             
+            <transition-stub
+              name="fade"
+            >
+              <!---->
+            </transition-stub>
+            <!---->
+          </div>
+        </div>
+        <p
+          class="help"
+        >
+           10/10/2020 à 19:25 
+          <!---->
+        </p>
+      </div>
+       
+      <div
+        class="field"
+      >
+        <label
+          class="label"
+        >
+          Extérieur
+        </label>
+        <div
+          class="field-body"
+        >
+          <div
+            class="field has-addons"
+          >
+            <!---->
+            <div
+              class="b-slider is-success is-disabled"
+            >
+              <div
+                class="b-slider-track"
+              >
+                <div
+                  class="b-slider-fill"
+                  style="width: 32%; left: 0%;"
+                />
+                <div
+                  class="b-slider-tick"
+                  style="left: 1.5384615384615385%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 3.076923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 4.615384615384616%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 6.153846153846154%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 7.6923076923076925%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 9.230769230769232%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 10.76923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 12.307692307692308%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 13.846153846153847%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 15.384615384615385%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 16.923076923076923%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 18.461538461538463%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 20%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 21.53846153846154%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 23.076923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 24.615384615384617%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 26.153846153846157%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 27.692307692307693%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 29.230769230769234%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 30.76923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 32.30769230769231%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 33.84615384615385%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 35.38461538461539%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 36.92307692307693%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 38.46153846153847%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 40%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 41.53846153846154%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 43.07692307692308%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 44.61538461538462%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 46.15384615384615%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 47.69230769230769%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 49.23076923076923%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 50.76923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 52.307692307692314%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 53.84615384615385%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 55.38461538461539%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 56.92307692307692%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 58.46153846153847%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 60%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 61.53846153846154%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 63.07692307692307%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 64.61538461538461%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 66.15384615384615%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 67.6923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 69.23076923076923%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 70.76923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 72.3076923076923%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 73.84615384615385%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 75.38461538461539%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 76.92307692307693%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 78.46153846153847%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 80%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 81.53846153846153%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 83.07692307692308%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 84.61538461538461%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 86.15384615384616%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 87.6923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 89.23076923076924%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 90.76923076923077%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 92.3076923076923%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 93.84615384615384%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 95.38461538461539%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 96.92307692307692%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 98.46153846153847%;"
+                >
+                  <!---->
+                </div>
+                <div
+                  class="b-slider-tick is-tick-hidden"
+                  style="left: 0%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    -15
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 7.6923076923076925%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    -10
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 15.384615384615385%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    -5
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 23.076923076923077%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    0
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 30.76923076923077%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    5
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 38.46153846153847%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    10
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 46.15384615384615%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    15
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 53.84615384615385%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    20
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 61.53846153846154%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    25
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 69.23076923076923%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    30
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 76.92307692307693%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    35
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 84.61538461538461%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    40
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick"
+                  style="left: 92.3076923076923%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    45
+                  </span>
+                </div>
+                <div
+                  class="b-slider-tick is-tick-hidden"
+                  style="left: 100%;"
+                >
+                  <span
+                    class="b-slider-tick-label"
+                  >
+                    50
+                  </span>
+                </div>
+                <div
+                  class="b-slider-thumb-wrapper has-indicator"
+                  style="left: 32%;"
+                >
+                  <span
+                    class="b-tooltip is-success is-top is-medium"
+                  >
+                    <transition-stub
+                      name="fade"
+                    >
+                      <div
+                        class="tooltip-content"
+                        style="display: none;"
+                      >
+                        5.8
+                      </div>
+                    </transition-stub>
+                    <div
+                      class="tooltip-trigger"
+                    >
+                      <div
+                        aria-disabled="true"
+                        aria-orientation="horizontal"
+                        aria-valuemax="50"
+                        aria-valuemin="-15"
+                        aria-valuenow="5.8"
+                        class="b-slider-thumb"
+                        role="slider"
+                      >
+                        <span>
+                          5.8
+                        </span>
+                      </div>
+                    </div>
+                  </span>
+                </div>
+                <!---->
+              </div>
+            </div>
+             
+            <transition-stub
+              name="fade"
+            >
+              <!---->
+            </transition-stub>
+            <!---->
+          </div>
+        </div>
+        <p
+          class="help"
+        >
+           10/10/2020 à 19:25 
+          <!---->
+        </p>
+      </div>
        
       <div
         class="field"
