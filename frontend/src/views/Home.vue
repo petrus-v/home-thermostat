@@ -21,6 +21,7 @@
         <b-field label="Température minimale (°C)">
           <b-numberinput
             placeholder="T°C minimale..."
+            icon="thermometer"
             step="0.5"
             min-step="0.1"
             v-model="minimalTemperatureState.celsius"
@@ -38,6 +39,7 @@
             locale="fr-FR"
             :auto-switch="false"
             hours-label="Heures"
+            :time-formatter="displayedTime"
             v-model="startTime"
             :loading="isConfortRangeLoading"
             :disabled="isConfortRangeLoading"
@@ -56,8 +58,11 @@
             :disabled="isConfortRangeLoading"
             editable
           ></b-clockpicker>
+        </b-field>
+        <b-field>
           <b-numberinput
             placeholder="T°C confort..."
+            icon="thermometer"
             controls-position="compact"
             v-model="confortCelsius"
             :loading="isConfortRangeLoading"
@@ -72,7 +77,7 @@
         <h2 class="subtitle">Relais</h2>
         <div class="field">
           <b-switch
-            :disabled="isDesiredBurnerLoading"
+            :disabled="mode.mode !== 'manual' || isDesiredBurnerLoading"
             v-on:input="onChangeDesiredBurnerState"
             v-model="burnerDesiredState.is_open"
             :true-value="false"
@@ -81,14 +86,9 @@
             size="is-large"
             passive-type="is-dark"
             name="switch-desired-burner-state"
-            v-if="mode.mode === 'manual'"
           >
             <p>Etat désiré du bruleur</p>
-            <b-loading
-              :is-full-page="false"
-              v-model="isDesiredBurnerLoading"
-              :can-cancel="false"
-            ></b-loading>
+            <b-loading :is-full-page="false" v-model="isDesiredBurnerLoading" :can-cancel="false"></b-loading>
             <span class="is-size-6">{{ desiredBurnerStateDate }}</span>
           </b-switch>
           <b-switch
@@ -101,17 +101,13 @@
             passive-type="is-dark"
           >
             <p>Etat du bruleur</p>
-            <b-loading
-              :is-full-page="false"
-              v-model="isBurnerLoading"
-              :can-cancel="false"
-            ></b-loading>
+            <b-loading :is-full-page="false" v-model="isBurnerLoading" :can-cancel="false"></b-loading>
             <span class="is-size-6">{{ burnerStateDate }}</span>
           </b-switch>
         </div>
         <div class="field">
           <b-switch
-            :disabled="isDesiredEngineLoading"
+            :disabled="mode.mode !== 'manual' || isDesiredEngineLoading"
             v-on:input="onChangeDesiredEngineState"
             v-model="engineDesiredState.is_open"
             :true-value="false"
@@ -120,14 +116,9 @@
             size="is-large"
             passive-type="is-dark"
             name="switch-desired-engine-state"
-            v-if="mode.mode === 'manual'"
           >
             <p>Etat désiré du circulateur</p>
-            <b-loading
-              :is-full-page="false"
-              v-model="isDesiredEngineLoading"
-              :can-cancel="false"
-            ></b-loading>
+            <b-loading :is-full-page="false" v-model="isDesiredEngineLoading" :can-cancel="false"></b-loading>
             <span class="is-size-6">{{ desiredEngineStateDate }}</span>
           </b-switch>
           <b-switch
@@ -140,11 +131,7 @@
             passive-type="is-dark"
           >
             <p>Etat du circulateur</p>
-            <b-loading
-              :is-full-page="false"
-              v-model="isEngineLoading"
-              :can-cancel="false"
-            ></b-loading>
+            <b-loading :is-full-page="false" v-model="isEngineLoading" :can-cancel="false"></b-loading>
             <span class="is-size-6">{{ engineStateDate }}</span>
           </b-switch>
         </div>
@@ -210,7 +197,7 @@ const defaultThermometer = { celsius: null };
 export default {
   name: "Home",
   components: {
-    Thermometer,
+    Thermometer
   },
   data() {
     return {
@@ -239,7 +226,7 @@ export default {
       isEngineLoading: true,
       isDesiredEngineLoading: true,
       engineState: defaultRelay,
-      engineDesiredState: defaultRelay,
+      engineDesiredState: defaultRelay
     };
   },
   computed: {
@@ -250,7 +237,7 @@ export default {
       set(value) {
         this.confortRange.celsius = value;
         this.onChangeConfortRange();
-      },
+      }
     },
     startTime: {
       get() {
@@ -259,7 +246,7 @@ export default {
       set(value) {
         this.confortRange.start = this.dateToStr(value);
         this.onChangeConfortRange();
-      },
+      }
     },
     endTime: {
       get() {
@@ -268,7 +255,7 @@ export default {
       set(value) {
         this.confortRange.end = this.dateToStr(value);
         this.onChangeConfortRange();
-      },
+      }
     },
     livingRoomDate() {
       return this.parseDate(this.livingRoomState.create_date);
@@ -293,26 +280,27 @@ export default {
     },
     engineStateDate() {
       return this.parseDate(this.engineState.create_date);
-    },
+    }
   },
   methods: {
+    displayedTime(time) {
+      return new Intl.DateTimeFormat("fr-FR", {
+        hour: "numeric",
+        minute: "numeric",
+        hour12: undefined,
+        timezome: "Europe/Paris"
+      }).format(time);
+    },
     parseTime(timeStr) {
       var d = new Date();
       if (timeStr !== null && timeStr.length >= 5) {
         const match = timeStr.match(/(\d\d):(\d\d)/);
-        d.setHours(parseInt(match[1]));
-        d.setMinutes(parseInt(match[2]));
+        d = new Date(Date.UTC(1970, 1, 1, match[1], match[2]));
       }
       return d;
     },
     dateToStr(value) {
-      const dtf = new Intl.DateTimeFormat("fr-FR", {
-        hour: "numeric",
-        minute: "numeric",
-        hour12: undefined,
-        timezome: "UTC",
-      });
-      return dtf.format(value);
+      return value.toLocaleTimeString("fr-FR", { timeZone: "UTC" });
     },
     parseDate(dateStr) {
       if (dateStr === undefined || !dateStr) {
@@ -329,7 +317,7 @@ export default {
         day: "numeric",
         hour: "numeric",
         minute: "numeric",
-        second: undefined,
+        second: undefined
       }).format(date);
     },
     getStates() {
@@ -348,7 +336,7 @@ export default {
     onChangeMinimalTemperature() {
       this.setMinimalTemperature();
     },
-    onChangeConfortRange: debounce(function () {
+    onChangeConfortRange: debounce(function() {
       this.setConfortRange();
     }, 2000), // 2s
     onChangeMode(newValue) {
@@ -356,7 +344,7 @@ export default {
     },
     getMode() {
       this.call_api("/api/mode", "GET", "isModeLoading", "mode", null, {
-        mode: null,
+        mode: null
       });
     },
     setMode(modeValue) {
@@ -367,7 +355,7 @@ export default {
         "mode",
         JSON.stringify({ mode: modeValue }),
         {
-          mode: null,
+          mode: null
         }
       );
     },
@@ -517,7 +505,7 @@ export default {
     getOrSetState(method, device_type, device, loaderName, stateName, payload) {
       const defaultStates = {
         relay: defaultRelay,
-        thermometer: defaultThermometer,
+        thermometer: defaultThermometer
       };
       const error_state = defaultStates[device_type];
       this.call_api(
@@ -536,10 +524,10 @@ export default {
         method: method,
         body: payload,
         headers: {
-          "Content-Type": "application/json",
-        },
+          "Content-Type": "application/json"
+        }
       })
-        .then(function (response) {
+        .then(function(response) {
           if (!response.ok) {
             self[loaderName] = false;
             self[stateName] = error_state;
@@ -547,19 +535,19 @@ export default {
           }
           if (response.ok) return response.json();
         })
-        .then(function (state) {
+        .then(function(state) {
           self[stateName] = state;
           self[loaderName] = false;
         })
-        .catch((err) => {
+        .catch(err => {
           console.error("Error: ", err);
           self[loaderName] = false;
           self[stateName] = error_state;
         });
-    },
+    }
   },
   mounted() {
     this.getStates();
-  },
+  }
 };
 </script>
