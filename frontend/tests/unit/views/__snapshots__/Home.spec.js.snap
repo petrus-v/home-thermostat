@@ -108,7 +108,7 @@ exports[`Home mount Home view 1`] = `
             <span
               class="is-size-6"
             >
-              12/11/2020 à 23:12
+              12/11/2020, 23:12
             </span>
           </span>
         </label>
@@ -142,7 +142,7 @@ exports[`Home mount Home view 1`] = `
             <span
               class="is-size-6"
             >
-              12/11/2020 à 19:25
+              12/11/2020, 19:25
             </span>
           </span>
         </label>
@@ -179,7 +179,7 @@ exports[`Home mount Home view 1`] = `
             <span
               class="is-size-6"
             >
-              12/11/2020 à 21:50
+              12/11/2020, 21:50
             </span>
           </span>
         </label>
@@ -213,7 +213,7 @@ exports[`Home mount Home view 1`] = `
             <span
               class="is-size-6"
             >
-              12/11/2020 à 18:12
+              12/11/2020, 18:12
             </span>
           </span>
         </label>
@@ -829,7 +829,7 @@ exports[`Home mount Home view 1`] = `
         <p
           class="help"
         >
-           10/10/2020 à 19:25 
+           10/10/2020, 19:25 
           <!---->
         </p>
       </div>
@@ -1434,7 +1434,7 @@ exports[`Home mount Home view 1`] = `
         <p
           class="help"
         >
-           10/10/2020 à 19:25 
+           10/10/2020, 19:25 
           <!---->
         </p>
       </div>
@@ -2159,7 +2159,7 @@ exports[`Home mount Home view 1`] = `
         <p
           class="help"
         >
-           10/11/2020 à 19:25 
+           10/11/2020, 19:25 
           <!---->
         </p>
       </div>
@@ -2884,7 +2884,7 @@ exports[`Home mount Home view 1`] = `
         <p
           class="help"
         >
-           10/10/2020 à 19:25 
+           10/10/2020, 19:25 
           <!---->
         </p>
       </div>

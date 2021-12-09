@@ -75,21 +75,21 @@ describe("Home", () => {
       localVue,
     });
     await flushPromises();
-    expect(wrapper.vm.desiredEngineStateDate).toBe("12/11/2020 à 21:50");
-    expect(wrapper.vm.desiredBurnerStateDate).toBe("12/11/2020 à 23:12");
-    expect(wrapper.vm.engineStateDate).toBe("12/11/2020 à 18:12");
-    expect(wrapper.vm.burnerStateDate).toBe("12/11/2020 à 19:25");
-    expect(wrapper.vm.departureDate).toBe("10/11/2020 à 19:25");
-    expect(wrapper.vm.arrivalDate).toBe("10/10/2020 à 19:25");
-    expect(wrapper.vm.livingRoomDate).toBe("10/10/2020 à 19:25");
-    expect(wrapper.vm.outsideDate).toBe("10/10/2020 à 19:25");
+    expect(wrapper.vm.desiredEngineStateDate).toBe("12/11/2020, 21:50");
+    expect(wrapper.vm.desiredBurnerStateDate).toBe("12/11/2020, 23:12");
+    expect(wrapper.vm.engineStateDate).toBe("12/11/2020, 18:12");
+    expect(wrapper.vm.burnerStateDate).toBe("12/11/2020, 19:25");
+    expect(wrapper.vm.departureDate).toBe("10/11/2020, 19:25");
+    expect(wrapper.vm.arrivalDate).toBe("10/10/2020, 19:25");
+    expect(wrapper.vm.livingRoomDate).toBe("10/10/2020, 19:25");
+    expect(wrapper.vm.outsideDate).toBe("10/10/2020, 19:25");
     // // On my FR laptop (witout Docker CT)
-    // expect(wrapper.vm.desiredEngineStateDate).toBe("12/11/2020 à 22:50");
-    // expect(wrapper.vm.desiredBurnerStateDate).toBe("13/11/2020 à 00:12");
-    // expect(wrapper.vm.engineStateDate).toBe("12/11/2020 à 19:12");
-    // expect(wrapper.vm.burnerStateDate).toBe("12/11/2020 à 20:25");
-    // expect(wrapper.vm.departureDate).toBe("10/11/2020 à 20:25"); // CET
-    // expect(wrapper.vm.arrivalDate).toBe("10/10/2020 à 21:25"); // CEST
+    // expect(wrapper.vm.desiredEngineStateDate).toBe("12/11/2020, 22:50");
+    // expect(wrapper.vm.desiredBurnerStateDate).toBe("13/11/2020, 00:12");
+    // expect(wrapper.vm.engineStateDate).toBe("12/11/2020, 19:12");
+    // expect(wrapper.vm.burnerStateDate).toBe("12/11/2020, 20:25");
+    // expect(wrapper.vm.departureDate).toBe("10/11/2020, 20:25"); // CET
+    // expect(wrapper.vm.arrivalDate).toBe("10/10/2020, 21:25"); // CEST
   });
 
   it("mount Home view", async () => {
