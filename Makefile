@@ -40,7 +40,7 @@ setup-dev:  ## Create or update database that will be ready to run unit tests (w
 setup-integration:  ## Create or update database that will be ready to run integrations tests (with demo data)
 	docker-compose up -d db
 	$(call wait_db)
-	docker-compose run --rm backend bash -c "anyblok_createdb -c /etc/app.cfg --with-demo || anyblok_updatedb -c /etc/app.cfg"
+	docker-compose run --rm backend bash -c "anyblok_createdb -c /etc/anyblok.cfg --with-demo || anyblok_updatedb -c /etc/app.cfg"
 
 
 psql-dev:
