@@ -19,7 +19,7 @@ services:
       context: ./backend
     init: true
     volumes:
-      - ./backend/app.cfg:/etc/app.cfg
+      - ./backend/app.cfg:/etc/anyblok.cfg
     networks:
       - internal
 

@@ -40,4 +40,4 @@ WORKDIR /usr/backend
 COPY --from=dev /usr/backend/dist/*.whl /usr/backend/
 RUN pip install `ls *.whl`
 
-CMD ["gunicorn_anyblok_uvicorn", "--anyblok-configfile", "/etc/app.cfg", "-w", "4", "-b", "0.0.0.0:5000", "--timeout", "60"]
+CMD ["gunicorn_anyblok_uvicorn", "--anyblok-configfile", "/etc/anyblok.cfg", "-w", "4", "-b", "0.0.0.0:5000", "--timeout", "60"]

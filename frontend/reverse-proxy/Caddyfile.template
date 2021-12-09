@@ -3,7 +3,7 @@
 }
 
 ${HTTP_HOST:-http://thermostat.local} {
-    reverse_proxy /api/* http://backend:5000
+    reverse_proxy /api/* http://${BACKEND_ALIAS:-backend}:5000
 
     root * /srv/frontend/
     @try_files {
