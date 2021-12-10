@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: olegtarasov/get-tag@v2
+      - uses: olegtarasov/get-tag@v2.1.1
         id: tagName
       - name: Docker Login
         uses: Azure/docker-login@v1
@@ -71,7 +71,7 @@ jobs:
         run: |
           make test-integration
       - name: Tag and Deploy
-        if: ${{ env.GIT_TAG_NAME }}
+        if: ${{ steps.tagName.outputs.tag }}
         run: |
           docker push docker-registry.verkest.fr/pverkest/iot/backend:${GIT_TAG_NAME}
           docker push docker-registry.verkest.fr/pverkest/iot/frontend:${GIT_TAG_NAME}
