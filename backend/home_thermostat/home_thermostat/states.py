@@ -37,13 +37,18 @@ class Range(Mixin.UuidColumn, Mixin.TrackModel):
     def get_desired_living_room_temperature(cls, date: datetime) -> Optional[D]:
         if not date:
             date = datetime.now()
-        range_ = (
+        subquery = (
             cls.query()
             .distinct(cls.code)
-            .filter(cls.start <= date.time(), cls.end > date.time())
             .filter(cls.create_date < date)
             .order_by(cls.code.desc())
             .order_by(cls.create_date.desc())
+            .subquery()
+        )
+        range_ = (
+            cls.registry.query(subquery.c.celsius)
+            .select_from(subquery)
+            .filter(subquery.c.start <= date.time(), subquery.c.end > date.time())
             .first()
         )
         if range_:
