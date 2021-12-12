@@ -32,6 +32,26 @@ def engine(rollback_registry):
     return get_device(rollback_registry, "engine")
 
 
+@pytest.fixture
+def max_depart_desired_temp(rollback_registry):
+    return get_device(rollback_registry, "max_depart_desired_temperature")
+
+
+@pytest.fixture
+def max_return_desired_temp(rollback_registry):
+    return get_device(rollback_registry, "max_return_desired_temperature")
+
+
+@pytest.fixture
+def min_return_desired_temp(rollback_registry):
+    return get_device(rollback_registry, "min_return_desired_temperature")
+
+
+@pytest.fixture
+def min_diff_living_depart_desired_temp(rollback_registry):
+    return get_device(rollback_registry, "min_diff_living_depart_desired_temperature")
+
+
 def get_device(registry, external_id):
     device = registry.IO.Mapping.get("Model.Iot.Device", external_id)
     if not device:

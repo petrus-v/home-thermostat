@@ -40,4 +40,24 @@
     <field name="name">Fioul</field>
   </record>
 
+  <record external_id="max_depart_desired_temperature">
+    <field name="code">max-depart</field>
+    <field name="name">Départ maxi</field>
+  </record>
+
+  <record external_id="max_return_desired_temperature">
+    <field name="code">max-return</field>
+    <field name="name">Retour maxi</field>
+  </record>
+
+  <record external_id="min_return_desired_temperature">
+    <field name="code">min-return</field>
+    <field name="name">Retour maxi</field>
+  </record>
+
+  <record external_id="min_diff_living_depart_desired_temperature">
+    <field name="code">min-diff-engine</field>
+    <field name="name">Ecart température (Circulateur)</field>
+  </record>
+
 </records>
