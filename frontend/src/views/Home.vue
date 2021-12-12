@@ -182,6 +182,92 @@
           :loading="isArrivalLoading"
         />
       </div>
+
+       <div class="box" v-if="mode.mode === 'thermostat'">
+        <h2 class="subtitle">Réglages avancés</h2>
+        <b-field label="Température Départ Maximum (°C)">
+          <b-tooltip>
+            <b-numberinput
+              placeholder="T°C depart maxi..."
+              icon="thermometer"
+              step="1"
+              min-step="0.1"
+              v-model="MaxDepDesiredState.celsius"
+              v-on:input="onChangeMaxDepDesired"
+              :loading="isMaxDepDesiredLoading"
+              controls-position="compact"
+            ></b-numberinput>
+            <template v-slot:content>
+              <p>
+                Arrête de chauffer si le tuyau de départ à dépasser cette valeur.
+              </p>
+            </template>
+          </b-tooltip>
+        </b-field>
+        <b-field label="Température Retour Maximum (°C)">
+          <b-tooltip>
+            <b-numberinput
+              placeholder="T°C retour maxi..."
+              icon="thermometer"
+              step="1"
+              min-step="0.1"
+              v-model="MaxRetDesiredState.celsius"
+              v-on:input="onChangeMaxRetDesired"
+              :loading="isMaxRetDesiredLoading"
+              controls-position="compact"
+            ></b-numberinput>
+            <template v-slot:content>
+              <p>
+                Arrête de chauffer si le tuyau de retour à dépasser cette valeur.
+              </p>
+            </template>
+          </b-tooltip>
+        </b-field>
+        <b-field label="Température de retour avant re-chauffe (°C)">
+          <b-tooltip>
+            <b-numberinput
+              placeholder="T°C retour min..."
+              icon="thermometer"
+              step="1"
+              min-step="0.1"
+              v-model="MinRetDesiredState.celsius"
+              v-on:input="onChangeMinRetDesired"
+              :loading="isMinRetDesiredLoading"
+              controls-position="compact"
+            ></b-numberinput>
+            <template v-slot:content>
+              <p>
+                Si dernirement le tuyaux de retour à atteint le Maximum,
+                alors on attend de redescendre en dessous de cette valeur
+                avant de rallumer le brûleur. Penser à la latence de la chaudière
+                20 minutes env !
+              </p>
+            </template>
+          </b-tooltip>
+        </b-field>
+        <b-field label="Circulateur: Ecart température(°C)">
+          <b-tooltip>
+            <b-numberinput
+              placeholder="Min diff (retour - salon)..."
+              icon="thermometer"
+              step="1"
+              min-step="0.1"
+              v-model="MinDiffDesiredState.celsius"
+              v-on:input="onChangeMinDiffDesired"
+              :loading="isMinDiffDesiredLoading"
+              controls-position="compact"
+            ></b-numberinput>
+            <template v-slot:content>
+              <p>
+                Le circulateur est activé si la chaudière a tourné dans les 2 dernières heures.
+              </p>
+              <p>
+                ou si, la différence de température du tuyaux - celle du salon est supérieur à cette valeur.
+              </p>
+            </template>
+          </b-tooltip>
+        </b-field>
+      </div>
     </section>
   </div>
 </template>
@@ -226,7 +312,19 @@ export default {
       isEngineLoading: true,
       isDesiredEngineLoading: true,
       engineState: defaultRelay,
-      engineDesiredState: defaultRelay
+      engineDesiredState: defaultRelay,
+      maxDepDesired: global.MAX_DEP_DESIRED,
+      MaxDepDesiredState: defaultThermometer,
+      isMaxDepDesiredLoading: true,
+      maxRetDesired: global.MAX_RET_DESIRED,
+      MaxRetDesiredState: defaultThermometer,
+      isMaxRetDesiredLoading: true,
+      minRetDesired: global.MIN_RET_DESIRED,
+      MinRetDesiredState: defaultThermometer,
+      isMinRetDesiredLoading: true,
+      minDiffDesired: global.MIN_DIFF_DESIRED,
+      MinDiffDesiredState: defaultThermometer,
+      isMinDiffDesiredLoading: true
     };
   },
   computed: {
@@ -332,6 +430,10 @@ export default {
       this.getConfortRageState();
       this.getOutSideState();
       this.getLivingRoomState();
+      this.getMaxDepDesired();
+      this.getMaxRetDesired();
+      this.getMinRetDesired();
+      this.getMinDiffDesired();
     },
     onChangeMinimalTemperature() {
       this.setMinimalTemperature();
@@ -447,6 +549,86 @@ export default {
         "isOutsideLoading",
         "outsideState",
         null
+      );
+    },
+    getMaxDepDesired(){
+      this.getOrSetState(
+        "GET",
+        "thermometer",
+        this.maxDepDesired,
+        "isMaxDepDesiredLoading",
+        "MaxDepDesiredState",
+        null
+      );
+    },
+    getMaxRetDesired(){
+      this.getOrSetState(
+        "GET",
+        "thermometer",
+        this.maxRetDesired,
+        "isMaxRetDesiredLoading",
+        "MaxRetDesiredState",
+        null
+      );
+    },
+    getMinRetDesired(){
+      this.getOrSetState(
+        "GET",
+        "thermometer",
+        this.minRetDesired,
+        "isMinRetDesiredLoading",
+        "MinRetDesiredState",
+        null
+      );
+    },
+    getMinDiffDesired(){
+      this.getOrSetState(
+        "GET",
+        "thermometer",
+        this.minDiffDesired,
+        "isMinDiffDesiredLoading",
+        "MinDiffDesiredState",
+        null
+      );
+    },
+    onChangeMaxDepDesired(new_value){
+      this.getOrSetState(
+        "POST",
+        "thermometer",
+        this.maxDepDesired,
+        "isMaxDepDesiredLoading",
+        "MaxDepDesiredState",
+        JSON.stringify({ celsius: new_value })
+      );
+    },
+    onChangeMaxRetDesired(new_value){
+      this.getOrSetState(
+        "POST",
+        "thermometer",
+        this.maxRetDesired,
+        "isMaxRetDesiredLoading",
+        "MaxRetDesiredState",
+        JSON.stringify({ celsius: new_value })
+      );
+    },
+    onChangeMinRetDesired(new_value){
+      this.getOrSetState(
+        "POST",
+        "thermometer",
+        this.minRetDesired,
+        "isMinRetDesiredLoading",
+        "MinRetDesiredState",
+        JSON.stringify({ celsius: new_value })
+      );
+    },
+    onChangeMinDiffDesired(new_value){
+      this.getOrSetState(
+        "POST",
+        "thermometer",
+        this.minDiffDesired,
+        "isMinDiffDesiredLoading",
+        "MinDiffDesiredState",
+        JSON.stringify({ celsius: new_value })
       );
     },
     onChangeDesiredBurnerState(new_value) {

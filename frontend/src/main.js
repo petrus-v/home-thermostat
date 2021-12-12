@@ -18,6 +18,13 @@ global.ARRIVAL = "28-01193a77449f";
 global.LIVING = "28-01193a44fa4c";
 global.OUTSIDE = "28-01193a503a1a";
 
+
+global.MAX_DEP_DESIRED = "max-depart"
+global.MAX_RET_DESIRED = "max-return"
+global.MIN_RET_DESIRED = "min-return"
+global.MIN_DIFF_DESIRED = "min-diff-engine"
+
+
 new Vue({
   router,
   store,
