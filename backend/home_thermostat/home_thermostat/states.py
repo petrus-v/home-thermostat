@@ -203,8 +203,12 @@ class DesiredRelay(Model.Iot.State):
             # there are no thermometer working
             # user should move to manual mode
             return cls(is_open=True)
-        if Thermometer.get_last_value(DEVICE.DEPARTURE_SENSOR.value) >= Thermometer.get_last_value(DEVICE.MAX_DEP_DESIRED.value):
-            # departure is to hot
+        if Thermometer.wait_min_return_desired_temperature(
+            DEVICE.DEPARTURE_SENSOR,
+            DEVICE.MIN_RET_DESIRED,
+            DEVICE.MAX_DEP_DESIRED,
+        ):
+            # departure is to hot or waiting under ret min desired
             return cls(is_open=True)
         celsius_desired = Range.get_desired_living_room_temperature(date)
         if celsius_avg >= celsius_desired:
@@ -213,7 +217,11 @@ class DesiredRelay(Model.Iot.State):
         if Thermometer.get_last_value(DEVICE.RETURN_SENOR.value) >= Thermometer.get_last_value(DEVICE.MAX_RET_DESIRED.value):
             # return temperature is to hot
             return cls(is_open=True)
-        if Thermometer.wait_min_return_desired_temperature():
+        if Thermometer.wait_min_return_desired_temperature(
+            DEVICE.RETURN_SENOR,
+            DEVICE.MIN_RET_DESIRED,
+            DEVICE.MAX_RET_DESIRED,
+        ):
             # wait return temperature to get the DEVICE.MIN_RET_DESIRED.value
             # temperature before start burner again
             return cls(is_open=True)
@@ -280,17 +288,17 @@ class Thermometer(Model.Iot.State):
         return 0
     
     @classmethod
-    def wait_min_return_desired_temperature(cls):
+    def wait_min_return_desired_temperature(cls, device_sensor: DEVICE, device_min: DEVICE, device_max: DEVICE):
         # wait return temperature to get the DEVICE.MIN_RET_DESIRED.value
         # temperature before start burner again
         Device = cls.registry.Iot.Device
         State = cls.registry.Iot.State
-        max_temp = cls.get_last_value(DEVICE.MAX_RET_DESIRED.value)
-        min_temp = cls.get_last_value(DEVICE.MIN_RET_DESIRED.value)
+        min_temp = cls.get_last_value(device_min.value)
+        max_temp = cls.get_last_value(device_max.value)
         last_pick = (
             cls.query()
             .join(Device)
-            .filter(Device.code == DEVICE.RETURN_SENOR.value)
+            .filter(Device.code == device_sensor.value)
             .filter(cls.celsius >= max_temp)
             .order_by(State.create_date.desc())
             .first()
@@ -300,7 +308,7 @@ class Thermometer(Model.Iot.State):
         last_curve = (
             cls.query()
             .join(Device)
-            .filter(Device.code == DEVICE.RETURN_SENOR.value)
+            .filter(Device.code == device_sensor.value)
             .filter(cls.celsius <= min_temp)
             .filter(State.create_date > last_pick.create_date)
             .order_by(State.create_date.desc())

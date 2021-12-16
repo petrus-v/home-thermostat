@@ -52,7 +52,7 @@
 
   <record external_id="min_return_desired_temperature">
     <field name="code">min-return</field>
-    <field name="name">Retour maxi</field>
+    <field name="name">Retour mini</field>
   </record>
 
   <record external_id="min_diff_living_depart_desired_temperature">

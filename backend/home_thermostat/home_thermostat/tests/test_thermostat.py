@@ -230,7 +230,7 @@ def test_thermostat_relay_and_engine_states(
         desired_engine2_state_expected=False,
         desired_engine_later_state_expected=True,
     )
-    # arret bruleur la température de départ est supériore à 65
+    # arret bruleur la température de départ est supérieur à 65
     next_check(
         living_room_t=D("8.1"),
         water_departures_t=D("66.0"),
@@ -240,10 +240,21 @@ def test_thermostat_relay_and_engine_states(
         desired_engine2_state_expected=False,
         desired_engine_later_state_expected=True,
     )
+    # la température est en dessous mais la température de départ
+    # n'est pas encore revenue sous le seuil
+    next_check(
+        living_room_t=D("8.2"),
+        water_departures_t=D("40.0"),
+        water_returns_t=D("15.0"),
+        desired_burner_state_expected=True,
+        desired_engine1_state_expected=False,
+        desired_engine2_state_expected=False,
+        desired_engine_later_state_expected=False,
+    )
     # la température est toujours en dessous on rallume le bruleur
     next_check(
         living_room_t=D("9.1"),
-        water_departures_t=D("50.0"),
+        water_departures_t=D("30.0"),
         water_returns_t=D("30.0"),
         desired_burner_state_expected=False,
         desired_engine1_state_expected=False,
@@ -263,7 +274,7 @@ def test_thermostat_relay_and_engine_states(
     # on a pas atteint le retour max on continue la chauffe
     next_check(
         living_room_t=D("10.1"),
-        water_departures_t=D("40.0"),
+        water_departures_t=D("31.0"),
         water_returns_t=D("40.0"),
         desired_burner_state_expected=False,
         desired_engine1_state_expected=False,
@@ -306,6 +317,17 @@ def test_thermostat_relay_and_engine_states(
         water_departures_t=D("66.0"),
         water_returns_t=D("35.0"),
         desired_burner_state_expected=True,
+        desired_engine1_state_expected=False,
+        desired_engine2_state_expected=False,
+        desired_engine_later_state_expected=False,
+    )
+    # le départ repasse en dessous
+    # (ouais ok c'est stupide d'avoir un retour plus chaud)
+    next_check(
+        living_room_t=D("10.5"),
+        water_departures_t=D("31.0"),
+        water_returns_t=D("35.0"),
+        desired_burner_state_expected=False,
         desired_engine1_state_expected=False,
         desired_engine2_state_expected=False,
         desired_engine_later_state_expected=False,
@@ -392,7 +414,7 @@ def test_thermostat_relay_and_engine_states(
         desired_engine2_state_expected=False,
         desired_engine_later_state_expected=False,
     )
-    # il fait sufisament chaud dans la piece depuis un bout de temps
+    # il fait suffisamment chaud dans la piece depuis un bout de temps
     # la température est redescendu
     next_check(
         living_room_t=D("15.8"),
