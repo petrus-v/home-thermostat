@@ -159,7 +159,7 @@
           :step1="0"
           :step2="18"
           :step3="28"
-          :value="outsideState.celsius"
+          :value="outsideState.temperature"
           :loading="isOutsideLoading"
         />
         <thermometer
@@ -279,6 +279,7 @@ import debounce from "lodash/debounce";
 const defaultRange = { start: null, end: null, celsius: null };
 const defaultRelay = { is_open: true };
 const defaultThermometer = { celsius: null };
+const defaultWeatherStation = { temperature: null, sensor_date: null };
 
 export default {
   name: "Home",
@@ -297,7 +298,7 @@ export default {
       livingRoomState: defaultThermometer,
       isLivingRoomLoading: true,
       outside: global.OUTSIDE,
-      outsideState: defaultThermometer,
+      outsideState: defaultWeatherStation,
       isOutsideLoading: true,
       departure: global.DEPARTURE,
       isDeapartureLoading: true,
@@ -359,7 +360,7 @@ export default {
       return this.parseDate(this.livingRoomState.create_date);
     },
     outsideDate() {
-      return this.parseDate(this.outsideState.create_date);
+      return this.parseDate(this.outsideState.sensor_date);
     },
     departureDate() {
       return this.parseDate(this.departureState.create_date);
@@ -404,10 +405,9 @@ export default {
       if (dateStr === undefined || !dateStr) {
         return "";
       }
-      if (dateStr.length <= 26) {
+      if (dateStr.length == 26) {
         dateStr = dateStr.concat("+00:00");
       }
-
       const date = new Date(Date.parse(dateStr));
       return new Intl.DateTimeFormat("fr-FR", {
         year: "numeric",
@@ -544,7 +544,7 @@ export default {
     getOutSideState() {
       this.getOrSetState(
         "GET",
-        "thermometer",
+        "weather-station",
         this.outside,
         "isOutsideLoading",
         "outsideState",

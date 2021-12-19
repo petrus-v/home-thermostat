@@ -16,7 +16,7 @@ Vue.use(Buefy, {
 global.DEPARTURE = "28-01193a4a4aa2";
 global.ARRIVAL = "28-01193a77449f";
 global.LIVING = "28-01193a44fa4c";
-global.OUTSIDE = "28-01193a503a1a";
+global.OUTSIDE = "FW5282";
 
 
 global.MAX_DEP_DESIRED = "max-depart"

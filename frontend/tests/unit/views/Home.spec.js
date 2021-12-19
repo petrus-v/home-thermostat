@@ -50,7 +50,7 @@ describe("Home", () => {
     const departure_uri = `/api/device/thermometer/${global.DEPARTURE}/state`;
     const arrival_uri = `/api/device/thermometer/${global.ARRIVAL}/state`;
     const living_uri = `/api/device/thermometer/${global.LIVING}/state`;
-    const outside_uri = `/api/device/thermometer/${global.OUTSIDE}/state`;
+    const outside_uri = `/api/device/weather-station/${global.OUTSIDE}/state`;
     API_RESULTS[departure_uri] = Promise.resolve({
       celsius: 12.3,
       create_date: "2020-11-10T19:25:32.855879",
@@ -64,8 +64,9 @@ describe("Home", () => {
       create_date: "2020-10-10T19:25:32.855879",
     });
     API_RESULTS[outside_uri] = Promise.resolve({
-      celsius: 5.8,
-      create_date: "2020-10-10T19:25:32.855879",
+      temperature: 5.8,
+      sensor_date: "2020-10-10T19:25:32+00:00",
+      create_date: "2020-10-10T19:27:32.855879",
     });
   });
 
