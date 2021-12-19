@@ -7,14 +7,23 @@ from anyblok_fastapi.conftest import webserver  # noqa: F401
 from conftest import get_device
 from sqlalchemy.orm.exc import NoResultFound
 
-from home_thermostat.home_thermostat.schemas.devices import RelayState
+from home_thermostat.home_thermostat.schemas.devices import (
+    RelayState,
+    WeatherStationState,
+    APRSWeatherStationPacket,
+)
 
 # from testfixtures import Replace, test_datetime
 
 
 @pytest.fixture
 def some_states(
-    rollback_registry, engine, water_departures, water_returns, fioul_gauge
+    rollback_registry,
+    engine,
+    water_departures,
+    water_returns,
+    fioul_gauge,
+    weather_station,
 ):
     generate_states(rollback_registry.Iot.State.Relay, engine)
     rollback_registry.Iot.State.Thermometer.insert(
@@ -36,6 +45,21 @@ def some_states(
         device=fioul_gauge,
         create_date=datetime(2020, 6, 1, 8, 40),
         level=1105,  # 1.105 meter
+    )
+    rollback_registry.Iot.State.WeatherStation.insert(
+        device=weather_station,
+        create_date=datetime(2020, 6, 1, 8, 40),
+        sensor_date=datetime(2020, 6, 1, 8, 39),
+        wind_direction=52,
+        wind_speed=2.2352,
+        wind_gust=5.81152,
+        temperature=3.333333333333333,
+        rain_1h=0.0,
+        rain_24h=1.016,
+        rain_since_midnight=0.254,
+        humidity=95,
+        pressure=1027.1,
+        luminosity=0,
     )
     rollback_registry.flush()
 
@@ -112,6 +136,26 @@ def generate_states(State, engine):
             },
             "",
         ),
+        (
+            "weather-station",
+            "FW5282_weather_station",
+            {
+                "wind_direction": 52,
+                "wind_speed": 2.2352,
+                "wind_gust": 5.81152,
+                "temperature": 3.333333333333333,
+                "rain_1h": 0.0,
+                "rain_24h": 1.016,
+                "rain_since_midnight": 0.254,
+                "humidity": 95,
+                "pressure": 1027.1,
+                "luminosity": 0,
+                "create_date": "2020-06-01T08:40:00+00:00",
+                "sensor_date": "2020-06-01T08:39:00+00:00",
+                "device": {"code": "FW5282", "name": "CWOP Weather Station: FW5282"},
+            },
+            "",
+        ),
     ),
 )
 def test_api_device_code_state_get_latest_state(
@@ -154,6 +198,7 @@ def test_api_device_code_state_get_latest_state_not_defined(
         ("fuel-gauge", ""),
         ("relay", ""),
         ("relay", "/desired"),
+        ("weather-station", ""),
     ),
 )
 def test_api_device_code_state_wrong_code(
@@ -309,3 +354,89 @@ def test_set_test_range(rollback_registry, webserver):
     )
     assert r.status_code == 200, str(r)
     assert r.json() == expected_data2
+
+
+def test_parse_aprs_packet():
+    # {
+    #     'raw': 'FW5282>APRS,TCPXX*,qAX,CWOP-5:@192116z4759.58N/00227.12E_052/005g013t038r000p004P001h95b10271L000.DsVP',
+    #     'from': 'FW5282',
+    #     'to': 'APRS',
+    #     'path': ['TCPXX*', 'qAX', 'CWOP-5'],
+    #     'via': 'CWOP-5',
+    #     'messagecapable': True,
+    #     'raw_timestamp': '192116z',
+    #     'timestamp': 1639948560,
+    #     'format': 'uncompressed',
+    #     'posambiguity': 0,
+    #     'symbol': '_',
+    #     'symbol_table': '/',
+    #     'latitude': 47.993,
+    #     'longitude': 2.452,
+    #     'comment': '.DsVP',
+    #     'weather': {
+    #         'wind_direction': 52,
+    #         'wind_speed': 2.2352,
+    #         'wind_gust': 5.81152,
+    #         'temperature': 3.333333333333333,
+    #         'rain_1h': 0.0,
+    #         'rain_24h': 1.016,
+    #         'rain_since_midnight': 0.254,
+    #         'humidity': 95,
+    #         'pressure': 1027.1,
+    #         'luminosity': 0
+    #     }
+    # }
+
+    raw_data = APRSWeatherStationPacket(raw="FW5282>APRS,TCPXX*,qAX,CWOP-5:@192116z4759.58N/00227.12E_052/005g013t038r000p004P001h95b10271L000.DsVP")
+    weather_station_state : WeatherStationState = raw_data.parse()
+
+    # assert weather_station_state.station_id == "FW5282"
+    assert weather_station_state.sensor_date == datetime.fromtimestamp(1639948560)
+    assert weather_station_state.wind_direction == D('52')
+    assert weather_station_state.wind_speed == D('2.2352')
+    assert weather_station_state.wind_gust == D('5.81152')
+    assert weather_station_state.temperature == D('3.333333333333333')
+    assert weather_station_state.rain_1h == D('0.0')
+    assert weather_station_state.rain_24h == D('1.016')
+    assert weather_station_state.rain_since_midnight == D('0.254')
+    assert weather_station_state.humidity == D('95')
+    assert weather_station_state.pressure == D('1027.1')
+    assert weather_station_state.luminosity == D('0')
+
+
+def test_save_weather_station_state(rollback_registry, webserver, weather_station):
+    registry = rollback_registry
+    State = registry.Iot.State
+    count_before = State.query().count()
+    response = webserver.post(
+        f"/api/device/weather-station/{weather_station.code}/state",
+        json={
+            'sensor_date': "2020-06-15T11:42:00+00:00",
+            'wind_direction': 52,
+            'wind_speed': 2.2352,
+            'wind_gust': 5.81152,
+            'temperature': 3.333333333333333,
+            'rain_1h': 0.0,
+            'rain_24h': 1.016,
+            'rain_since_midnight': 0.254,
+            'humidity': 95,
+            'pressure': 1027.1,
+            'luminosity': 0
+        }
+    )
+    assert response.status_code == 200, str(response)
+    assert count_before + 1 == State.query().count()
+
+
+def test_save_weather_station_packet(rollback_registry, webserver, weather_station):
+    registry = rollback_registry
+    State = registry.Iot.State
+    count_before = State.query().count()
+    response = webserver.post(
+        f"/api/device/weather-station/aprs-packet",
+        json={
+            'raw': "FW5282>APRS,TCPXX*,qAX,CWOP-5:@192116z4759.58N/00227.12E_052/005g013t038r000p004P001h95b10271L000.DsVP",
+        }
+    )
+    assert response.status_code == 200, str(response)
+    assert count_before + 1 == State.query().count()

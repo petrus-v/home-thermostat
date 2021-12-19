@@ -31,6 +31,9 @@ def burner(rollback_registry):
 def engine(rollback_registry):
     return get_device(rollback_registry, "engine")
 
+@pytest.fixture
+def weather_station(rollback_registry):
+    return get_device(rollback_registry, "FW5282_weather_station")
 
 @pytest.fixture
 def max_depart_desired_temp(rollback_registry):

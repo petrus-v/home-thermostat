@@ -51,12 +51,15 @@ class HomeThermostat(Blok, BlokImporter):
             device_relay_desired_state,
             device_relay_state,
             device_thermometer_state,
+            device_weather_station_state,
             get_mode,
             get_thermostat_range,
             save_device_fuel_gauge_state,
             save_device_relay_desired_state,
             save_device_relay_state,
             save_device_thermometer_state,
+            save_device_weather_station_state,
+            save_device_weather_station_aprs_packet,
             set_mode,
             set_thermostat_range,
         )
@@ -66,6 +69,7 @@ class HomeThermostat(Blok, BlokImporter):
             ThermometerState,
             ThermostatMode,
             ThermostatRange,
+            WeatherStationState,
         )
 
         self.registry.declare_routes(
@@ -153,6 +157,27 @@ class HomeThermostat(Blok, BlokImporter):
                     methods=["POST"],
                     response_class=JSONResponse,
                     response_model=ThermostatRange,
+                ),
+                "GET/api/device/weather-station/{code}/state": APIRoute(
+                    "/api/device/weather-station/{code}/state",
+                    device_weather_station_state,
+                    methods=["GET"],
+                    response_class=JSONResponse,
+                    response_model=WeatherStationState,
+                ),
+                "POST/api/device/weather-station/{code}/state": APIRoute(
+                    "/api/device/weather-station/{code}/state",
+                    save_device_weather_station_state,
+                    methods=["POST"],
+                    response_class=JSONResponse,
+                    response_model=WeatherStationState,
+                ),
+                "POST/api/device/weather-station/aprs-packet": APIRoute(
+                    "/api/device/weather-station/aprs-packet",
+                    save_device_weather_station_aprs_packet,
+                    methods=["POST"],
+                    response_class=JSONResponse,
+                    response_model=WeatherStationState,
                 ),
             }
         )

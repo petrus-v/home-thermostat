@@ -8,11 +8,13 @@ from fastapi import Depends
 
 from home_thermostat.home_thermostat.common import ThermostatMode as Mode
 from home_thermostat.home_thermostat.schemas.devices import (
+    APRSWeatherStationPacket,
     FuelGaugeState,
     RelayState,
     ThermometerState,
     ThermostatMode,
     ThermostatRange,
+    WeatherStationState,
 )
 
 if TYPE_CHECKING:
@@ -148,6 +150,7 @@ def set_device_state(
     "registry.Iot.State.Relay",
     "registry.Iot.State.Thermometer",
     "registry.Iot.State.FuelGauge",
+    "registry.Iot.State.WeatherStation",
 ]:
     Device = registry.Iot.Device
     device = Device.query().filter(Device.code == code).one()
@@ -173,4 +176,40 @@ def get_mode(
     with registry_transaction(ab_registry) as registry:
         return ThermostatMode(
             mode=registry.System.Parameter.get("mode", default=Mode.manual.value)
+        )
+
+def device_weather_station_state(
+    code: str,
+    ab_registry: "Registry" = Depends(get_registry),
+) -> WeatherStationState:
+
+    """HTTP GET"""
+    with registry_transaction(ab_registry) as registry:
+        return WeatherStationState.from_orm(
+            registry.Iot.State.WeatherStation.get_device_state(code)
+        )
+
+def save_device_weather_station_state(
+    code: str,
+    state: WeatherStationState,
+    ab_registry: "Registry" = Depends(get_registry),
+) -> WeatherStationState:
+    with registry_transaction(ab_registry) as registry:
+        return WeatherStationState.from_orm(
+            set_device_state(registry, code, state, registry.Iot.State.WeatherStation)
+        )
+
+def save_device_weather_station_aprs_packet(
+    packet: APRSWeatherStationPacket,
+    ab_registry: "Registry" = Depends(get_registry),
+) -> WeatherStationState:
+    state: WeatherStationState = packet.parse()
+    with registry_transaction(ab_registry) as registry:
+        return WeatherStationState.from_orm(
+            set_device_state(
+                registry,
+                packet.code,
+                packet.parse(),
+                registry.Iot.State.WeatherStation
+            )
         )

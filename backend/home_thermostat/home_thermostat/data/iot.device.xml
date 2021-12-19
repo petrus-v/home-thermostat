@@ -60,4 +60,8 @@
     <field name="name">Ecart température (Circulateur)</field>
   </record>
 
+  <record external_id="FW5282_weather_station">
+    <field name="code">FW5282</field>
+    <field name="name">CWOP Weather Station: FW5282</field>
+  </record>
 </records>

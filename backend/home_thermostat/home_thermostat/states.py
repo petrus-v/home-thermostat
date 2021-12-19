@@ -6,7 +6,7 @@ from typing import Optional, Union
 from uuid import uuid4
 
 from anyblok import Declarations, registry
-from anyblok.column import UUID, Boolean, Decimal, Integer, Selection, String, Time
+from anyblok.column import UUID, Boolean, DateTime, Decimal, Integer, Selection, String, Time
 from anyblok.relationship import Many2One
 from sqlalchemy.sql import func
 
@@ -21,6 +21,7 @@ class DEVICE(Enum):
     BURNER_RELAY = "BURNER"
 
     FUEL_GAUGE = "FUEL"
+    WEATHER_STATION = "WEATHER"
     
     LIVING_ROOM_SENSOR = "28-01193a44fa4c"
     DEPARTURE_SENSOR = "28-01193a4a4aa2"
@@ -109,6 +110,7 @@ class State(Mixin.UuidColumn, Mixin.TrackModel):
             RELAY="Relay",
             TEMPERATURE="Thermometer",
             FUEL_GAUGE="fuelgauge",
+            WEATHER_STATION="WeatherStation",
         )
 
     @classmethod
@@ -128,6 +130,7 @@ class State(Mixin.UuidColumn, Mixin.TrackModel):
         "registry.Model.Iot.State.DesiredRelay",
         "registry.Model.Iot.State.Thermometer",
         "registry.Model.Iot.State.FuelGauge",
+        "registry.Model.Iot.State.WeatherStation",
     ]:
         """Cast states.State -> DeviceState is done throught fastAPI"""
         Device = cls.registry.Iot.Device
@@ -341,6 +344,50 @@ class Thermometer(Model.Iot.State):
             .group_by(Device.code)
             .scalar()
         )
+
+
+
+@Declarations.register(Model.Iot.State)
+class WeatherStation(Model.Iot.State):
+    """Weather state from APRS-IS packet"""
+
+    STATE_TYPE = "WEATHER_STATION"
+
+    uuid: uuid4 = UUID(
+        primary_key=True,
+        default=uuid4,
+        binary=False,
+        foreign_key=Model.Iot.State.use("uuid").options(ondelete="CASCADE"),
+    )
+    sensor_date: DateTime = DateTime(
+        label="Sensor timestamp",
+        primary_key=True,
+    )
+    wind_direction: D = Decimal(label="Wind direction")
+    wind_speed: D = Decimal(label="Wind Speed (km/h ?)")
+    wind_gust: D = Decimal(label="Wind gust (km/h ?)")
+    temperature: D = Decimal(label="Thermometer (°C)")
+    rain_1h: D = Decimal(label="rain (mm/1h)")
+    rain_24h: D = Decimal(label="rain (mm/24h)")
+    rain_since_midnight: D = Decimal(label="rain (mm/since midnight)")
+    humidity: D = Decimal(label="Humidity (%)")
+    pressure: D = Decimal(label="Pressure (hPa)")
+    luminosity: D = Decimal(label="Luminosity/irradiation (W/m2)")
+    
+
+    @classmethod
+    def get_last_state(cls, device_code: str):
+        """this method is different from get_device_state because
+        it do not use the same field to order values"""
+        Device = cls.registry.Iot.Device
+        return (
+            cls.query()
+            .join(Device)
+            .filter(Device.code == device_code)
+            .order_by(cls.sensor_date.desc())
+            .first()
+        )
+        
 
 
 @Declarations.register(Model.Iot.State)

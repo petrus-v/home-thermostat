@@ -20,6 +20,7 @@ requirements: "List[str]" = [
     "sqlalchemy",
     "anyblok",
     "anyblok_mixins",
+    "aprslib"
 ]
 
 test_requirements: "List[str]" = [

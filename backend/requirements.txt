@@ -15,6 +15,7 @@ anyblok-io==1.1.1
 anyblok-mixins==1.0.2
 anyblok-postgres==0.2.2
 appdirs==1.4.4
+aprslib==0.7.0
 async-property==0.2.1
 certifi==2020.11.8
 click==7.1.2
