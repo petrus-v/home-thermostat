@@ -376,17 +376,34 @@ class WeatherStation(Model.Iot.State):
     
 
     @classmethod
-    def get_last_state(cls, device_code: str):
-        """this method is different from get_device_state because
-        it do not use the same field to order values"""
+    def get_device_state(
+        cls,
+        code: str,
+    ) -> Union[
+        "registry.Model.Iot.State.Relay",
+        "registry.Model.Iot.State.DesiredRelay",
+        "registry.Model.Iot.State.Thermometer",
+        "registry.Model.Iot.State.FuelGauge",
+        "registry.Model.Iot.State.WeatherStation",
+    ]:
+        """Overwrite parent method to sort on sensor date and set fake date
+        while creating empty state
+        """
         Device = cls.registry.Iot.Device
-        return (
+        state = (
             cls.query()
             .join(Device)
-            .filter(Device.code == device_code)
-            .order_by(cls.sensor_date.desc())
+            .filter(Device.code == code)
+            .order_by(cls.registry.Iot.State.WeatherStation.sensor_date.desc())
             .first()
         )
+        if not state:
+            device = Device.query().filter_by(code=code).one()
+            # We don't want to instert a new state here, just creating
+            # a default instance
+            state = cls(device=device, sensor_date=datetime.now())
+            cls.registry.flush()
+        return state
         
 
 
