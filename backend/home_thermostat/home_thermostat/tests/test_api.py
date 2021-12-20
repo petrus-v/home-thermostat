@@ -141,6 +141,7 @@ def generate_states(State, engine):
             "weather-station",
             "FW5282_weather_station",
             {
+                "station_code": "FW5282",
                 "wind_direction": 52,
                 "wind_speed": 2.2352,
                 "wind_gust": 5.81152,
