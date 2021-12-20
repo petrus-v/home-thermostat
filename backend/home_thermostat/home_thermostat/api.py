@@ -208,8 +208,8 @@ def save_device_weather_station_aprs_packet(
         return WeatherStationState.from_orm(
             set_device_state(
                 registry,
-                packet.code,
-                packet.parse(),
+                state.station_code,
+                state,
                 registry.Iot.State.WeatherStation
             )
         )

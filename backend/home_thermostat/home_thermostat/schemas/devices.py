@@ -60,7 +60,7 @@ class FuelGaugeState(BaseState):
 class WeatherStationState(BaseState):
     """Weather state from APRS-IS packet"""
 
-    # station_id: Optional[str] = None
+    station_code: str = None
     sensor_date: datetime = None
     wind_direction: Decimal = None
     wind_speed: Decimal = None
@@ -77,12 +77,11 @@ class APRSWeatherStationPacket(BaseModel):
     """APRS-IS raw data"""
 
     raw: str = None
-    code: Optional[str] = None
 
     def parse(self) -> WeatherStationState:
         data: dict = aprslib.parse(self.raw)
-        self.code = data["from"]
         return WeatherStationState(
+            station_code=data["from"],
             sensor_date=datetime.fromtimestamp(data["timestamp"]),
             **data["weather"]
         )

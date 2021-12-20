@@ -6,7 +6,7 @@ import respx
 from anyblok_fastapi.conftest import webserver  # noqa: F401
 from conftest import get_device
 from sqlalchemy.orm.exc import NoResultFound
-
+from sqlalchemy.exc import IntegrityError
 from home_thermostat.home_thermostat.schemas.devices import (
     RelayState,
     WeatherStationState,
@@ -48,6 +48,7 @@ def some_states(
     )
     rollback_registry.Iot.State.WeatherStation.insert(
         device=weather_station,
+        station_code=weather_station.code,
         create_date=datetime(2020, 6, 1, 8, 40),
         sensor_date=datetime(2020, 6, 1, 8, 39),
         wind_direction=52,
@@ -390,7 +391,7 @@ def test_parse_aprs_packet():
     raw_data = APRSWeatherStationPacket(raw="FW5282>APRS,TCPXX*,qAX,CWOP-5:@192116z4759.58N/00227.12E_052/005g013t038r000p004P001h95b10271L000.DsVP")
     weather_station_state : WeatherStationState = raw_data.parse()
 
-    # assert weather_station_state.station_id == "FW5282"
+    assert weather_station_state.station_code == "FW5282"
     assert weather_station_state.sensor_date == datetime.fromtimestamp(1639948560)
     assert weather_station_state.wind_direction == D('52')
     assert weather_station_state.wind_speed == D('2.2352')
@@ -411,6 +412,7 @@ def test_save_weather_station_state(rollback_registry, webserver, weather_statio
     response = webserver.post(
         f"/api/device/weather-station/{weather_station.code}/state",
         json={
+            'station_code': weather_station.code,
             'sensor_date': "2020-06-15T11:42:00+00:00",
             'wind_direction': 52,
             'wind_speed': 2.2352,
@@ -439,4 +441,13 @@ def test_save_weather_station_packet(rollback_registry, webserver, weather_stati
         }
     )
     assert response.status_code == 200, str(response)
+    assert response.json()["station_code"] == weather_station.code
     assert count_before + 1 == State.query().count()
+    with pytest.raises(IntegrityError):
+        # same station_code/tiemstamp
+        response = webserver.post(
+            f"/api/device/weather-station/aprs-packet",
+            json={
+                'raw': "FW5282>APRS,TCPXX*,qAX,CWOP-5:@192116z4759.58N/00227.12E_052/005g013t038r000p004P001h95b10271L000.DsVP",
+            },
+        )

@@ -9,6 +9,7 @@ from anyblok import Declarations, registry
 from anyblok.column import UUID, Boolean, DateTime, Decimal, Integer, Selection, String, Time
 from anyblok.relationship import Many2One
 from sqlalchemy.sql import func
+from sqlalchemy.schema import UniqueConstraint
 
 from .common import ThermostatMode
 
@@ -361,8 +362,15 @@ class WeatherStation(Model.Iot.State):
     )
     sensor_date: DateTime = DateTime(
         label="Sensor timestamp",
-        primary_key=True,
+        index=True,
     )
+    station_code: str = String(
+        label="Station code",
+        unique=False,
+        index=True,
+        nullable=False
+    )
+
     wind_direction: D = Decimal(label="Wind direction")
     wind_speed: D = Decimal(label="Wind Speed (km/h ?)")
     wind_gust: D = Decimal(label="Wind gust (km/h ?)")
@@ -373,7 +381,11 @@ class WeatherStation(Model.Iot.State):
     humidity: D = Decimal(label="Humidity (%)")
     pressure: D = Decimal(label="Pressure (hPa)")
     luminosity: D = Decimal(label="Luminosity/irradiation (W/m2)")
-    
+
+    @classmethod
+    def define_table_args(cls):
+        res = super().define_table_args()
+        return res + (UniqueConstraint(cls.sensor_date, cls.station_code),)
 
     @classmethod
     def get_device_state(
