@@ -6,9 +6,9 @@ applications.
 # add fuele gauge metric
 
 ```python
->>> registry.commit()
->>> from datetime import datetime
->>> jauge = registry.Iot.Device.query().filter_by(code="FUEL").one()
->>> date = datetime(2012, 10, 5, 22, 00)
->>> registry.Iot.State.FuelGauge.insert(level=815, device=jauge, create_date=date, edit_date=date)
+from datetime import datetime
+jauge = registry.Iot.Device.query().filter_by(code="FUEL").one()
+date = datetime(2022, 11, 10, 22, 00)
+registry.Iot.State.FuelGauge.insert(level=827, device=jauge, create_date=date, edit_date=date)
+registry.commit()
 ```
