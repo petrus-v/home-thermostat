@@ -1,0 +1,12 @@
+[Unit]
+Description=Send {{ device }}'s thermometer sensor data
+Documentation=https://github.com/petrus-v/home-thermostat
+ConditionACPower=true
+After=network.target network-online.target systemd-networkd.service NetworkManager.service connman.service
+OnFailure=pigpiod-restart.service
+
+[Service]
+User={{ host.data.temperature_card_app_user }}
+# WorkingDirectory={{ host.data.temperature_card_app_dir }}
+Type=oneshot
+ExecStart={{ host.data.temperature_card_venv_path }}/bin/temperature-publish-state

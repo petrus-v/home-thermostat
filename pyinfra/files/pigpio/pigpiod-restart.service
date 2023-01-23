@@ -1,0 +1,9 @@
+[Unit]
+Description=Restart pigpiod deamon service
+ConditionACPower=true
+
+[Service]
+User=root
+Type=oneshot
+ExecStartPre=-systemctl restart pigpiod
+ExecStart=systemctl status pigpiod

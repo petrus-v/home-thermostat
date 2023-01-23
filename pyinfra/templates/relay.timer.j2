@@ -1,0 +1,12 @@
+[Unit]
+Description=Ensure {{ device }}'s relay is in the desired state
+
+[Timer]
+OnCalendar={{ on_calendar }}
+AccuracySec=3s
+RandomizedDelaySec=0
+Persistent=true
+Unit={{ relay_service_unit_name }}.service 
+
+[Install]
+WantedBy=timers.target

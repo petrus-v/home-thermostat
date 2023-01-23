@@ -1,0 +1,12 @@
+[Unit]
+Description=Ensure {{ device }}'s relay is in the desired state
+Documentation=https://github.com/petrus-v/home-thermostat
+ConditionACPower=true
+After=network.target network-online.target systemd-networkd.service NetworkManager.service connman.service
+
+[Service]
+User={{ host.data.relay_card_app_user }}
+# WorkingDirectory={{ host.data.relay_card_app_dir }}
+Type=oneshot
+ExecStartPre=-{{ host.data.relay_card_venv_path }}/bin/relay-set {{ device }} {{ pin }}
+ExecStart={{ host.data.relay_card_venv_path }}/bin/relay-publish-state {{ device }} {{ pin }}

@@ -1,0 +1,17 @@
+[Unit]
+Description=Listen APRS CWOP Weather station messages
+Documentation=https://github.com/petrus-v/home-thermostat
+ConditionACPower=true
+After=network.target network-online.target systemd-networkd.service NetworkManager.service connman.service
+
+[Service]
+User={{ host.data.weather_station_app_user }}
+# WorkingDirectory={{ host.data.weather_station_app_dir }}
+Type=simple
+ExecStart={{ host.data.weather_station_venv_path }}/bin/aprs-station-publish-state -H %I
+
+Restart=on-failure
+RestartSec=5s
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,12 @@
+[Unit]
+Description=Send {{ device }}'s thermometer data
+
+[Timer]
+OnCalendar={{ on_calendar }}
+AccuracySec=3s
+RandomizedDelaySec=0
+Persistent=true
+Unit={{ thermometer_service_unit_name }}.service 
+
+[Install]
+WantedBy=timers.target
